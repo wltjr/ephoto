@@ -1,9 +1,9 @@
 ##### project
 project('ephoto', 'c',
-        version        : '1.5',
+        version        : '1.6.0',
         license        : 'BSD 2 clause',
         default_options: [ 'c_std=gnu99' ],
-        meson_version  : '>= 0.40.0')
+        meson_version  : '>= 0.47.0')
 base_url = 'https://www.enlightenment.org/about-'
 
 ##### convenience variables for later
@@ -14,7 +14,7 @@ cfg      = configuration_data()
 build_gadget = false
 
 ##### dependencies
-efl_version = '>= 1.19.0'
+efl_version = '>= 1.26.0'
 elm  = dependency('elementary', required: true,  version: efl_version)
 edje = dependency('edje',       required: true,  version: efl_version)
 eipc = dependency('ecore-ipc',  required: true,  version: efl_version)
