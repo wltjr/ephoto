@@ -1091,16 +1091,16 @@ _upload_image(void *data, Evas_Object *obj EINA_UNUSED,
    ephoto_file_upload_image(sb->ephoto, sb->entry);
 }
 
+#ifdef HAVE_LIBEXIF
 static void
 _view_exif(void *data, Evas_Object *obj EINA_UNUSED,
               void *event_info EINA_UNUSED)
 {
    Ephoto_Single_Browser *sb = data;
 
-#ifdef HAVE_LIBEXIF
-   ephoto_file_exif_data(sb->ephoto, sb->entry->path);
+   ephoto_file_
+}exif_data(sb->ephoto, sb->entry->path);
 #endif
-}
 
 static void
 _delete_image(void *data, Evas_Object *obj EINA_UNUSED,
