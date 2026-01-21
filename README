@@ -1,3 +1,8 @@
-Ephoto - A comprehensive image viewer written using the core EFL.
+# ephoto
+[![License](http://img.shields.io/badge/license-MIT-blue.svg?colorB=9977bb&style=plastic)](https://github.com/wltjr/ephoto/blob/master/LICENSE)
+![Build Status](https://github.com/wltjr/ephoto/actions/workflows/build.yml/badge.svg)
+
+A comprehensive image viewer written using the core EFL.
+
 For more information, please visit:
-http://www.smhouston.us/ephoto/
+https://www.enlightenment.org/about-ephoto.md
