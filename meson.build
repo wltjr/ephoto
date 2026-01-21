@@ -1,7 +1,7 @@
 ##### project
 project('ephoto', 'c',
         version        : '1.6.0',
-        license        : 'BSD 2 clause',
+        license        : 'MIT',
         default_options: [ 'c_std=gnu99' ],
         meson_version  : '>= 0.47.0')
 base_url = 'https://www.enlightenment.org/about-'
