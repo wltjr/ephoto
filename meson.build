@@ -29,7 +29,7 @@ dir_locale = join_paths(dir_prefix, get_option('localedir'))
 cc = meson.get_compiler('c')
 
 ##### get edje command
-edje_cmd = join_paths(edje.get_pkgconfig_variable('prefix'),
+edje_cmd = join_paths(edje.get_variable('prefix'),
                       'bin', 'edje_cc')
 ##### config.h
 cfg.set_quoted('PACKAGE'                 , proj)
