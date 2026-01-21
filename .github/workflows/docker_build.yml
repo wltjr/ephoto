@@ -1,0 +1,26 @@
+name: CI
+on:
+    push:
+        branches: [ master ]
+    pull_request:
+        branches: [ master ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+          - name: Check out repository
+            uses: actions/checkout@v4
+            with:
+                fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          - name: Run the build process inside Docker container
+            uses: addnab/docker-run-action@v3
+            with:
+                image: wltjr/docker-efl:latest
+                options: |
+                    -v ${{ github.workspace }}:/tmp/ephoto
+                run: |
+                    cd /tmp/ephoto
+                    meson setup --prefix /usr --buildtype=debug . build
+                    build-wrapper-linux-x86-64 --out-dir bw-output  ninja -C build
+                    ninja -C build
