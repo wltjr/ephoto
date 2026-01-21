@@ -29,7 +29,7 @@ executable('ephoto', [
   ],
   include_directories: inc,
   dependencies       : deps,
-  gui_app            : true,
+  win_subsystem      : 'windows',
   install            : true)
 
 executable('ephoto_thumbnail', [
