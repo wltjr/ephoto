@@ -5,8 +5,7 @@ static void _ephoto_display_usage(void);
 int
 main(int argc, char *argv[])
 {
-   int gadget = 0, id_num = 0, r = 0;
-   char buf[4096];
+   int id_num = 0, r = 0;
 
    elm_init(argc, (char **)argv);
    eio_init();
@@ -30,12 +29,6 @@ main(int argc, char *argv[])
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
-   if (getenv("E_GADGET_ID"))
-     {
-        gadget = 1;
-        snprintf(buf, sizeof(buf), "%s", getenv("E_GADGET_ID"));
-        id_num = atoi(buf);
-     }
    if (id_num < 0)
      {
         Evas_Object *win, *icon;
@@ -62,7 +55,7 @@ main(int argc, char *argv[])
      }
    else if (argc < 2)
      {
-        Evas_Object *win = ephoto_window_add(NULL, gadget, id_num);
+        Evas_Object *win = ephoto_window_add(NULL, 0, id_num);
 
         if (!win)
           {
@@ -86,7 +79,7 @@ main(int argc, char *argv[])
              r = 1;
              goto end;
           }
-        Evas_Object *win = ephoto_window_add(real, gadget, id_num);
+        Evas_Object *win = ephoto_window_add(real, 0, id_num);
 
         free(real);
         if (!win)
