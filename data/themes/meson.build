@@ -1,5 +1,5 @@
 cmd = [ edje_cmd,
-        '-id', join_paths(meson.source_root(), 'data' , 'themes', 'images'),
+        '-id', join_paths(meson.project_source_root(), 'data' , 'themes', 'images'),
         '@INPUT@', '@OUTPUT@'
       ]
 src = 'ephoto'
