@@ -7,7 +7,7 @@ main(int argc, char *argv[])
 {
    int id_num = 0, r = 0;
 
-   elm_init(argc, (char **)argv);
+   elm_init(argc, argv);
    eio_init();
    elm_need_efreet();
    elm_language_set("");
