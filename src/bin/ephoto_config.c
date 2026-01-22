@@ -596,7 +596,8 @@ static int
 _ephoto_config_load(Ephoto *ephoto)
 {
    Eet_File *ef;
-   char buf[4096], buf2[4096];
+   char buf[4096];
+   char buf2[2048];     // buf2 goes inside buf, 4096 + 11 chars = 4107 > 4096
 
    snprintf(buf2, sizeof(buf2), "%s/ephoto", efreet_config_home_get());
    ecore_file_mkpath(buf2);
@@ -635,7 +636,8 @@ _ephoto_on_config_save(void *data)
 {
    Ephoto *ephoto = data;
    Eet_File *ef;
-   char buf[4096], buf2[4096];
+   char buf[2048];      // buf goes inside buf2, 4096 + 4 chars = 4100 > 4096
+   char buf2[4096];
 
    snprintf(buf, sizeof(buf), "%s/ephoto/ephoto.cfg", efreet_config_home_get());
    snprintf(buf2, sizeof(buf2), "%s.tmp", buf);
