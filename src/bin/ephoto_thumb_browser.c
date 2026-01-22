@@ -1069,7 +1069,7 @@ void
 ephoto_thumb_browser_update_info_label(Ephoto *ephoto)
 {
    char buf[PATH_MAX];
-   char isize[PATH_MAX];
+   char isize[2048];    // isize goes inside image_info, 4096 + 29 chars = 4125 > 4096
    char image_info[PATH_MAX];
    double totsize;
    Ephoto_Thumb_Browser *tb = evas_object_data_get(ephoto->thumb_browser,
