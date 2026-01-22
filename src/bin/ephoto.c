@@ -104,7 +104,8 @@ end:
 static void
 _ephoto_display_usage(void)
 {
-   printf("Ephoto Usage: \n" "ephoto --help   : This page\n"
-                             "ephoto filename : Specifies a file to open\n"
-                             "ephoto dirname  : Specifies a directory to open\n");
+    printf("ephoto Usage: \n"
+           "ephoto --help   : This page\n"
+           "ephoto filename : Specifies a file to open\n"
+           "ephoto dirname  : Specifies a directory to open\n");
 }
