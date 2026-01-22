@@ -5,7 +5,8 @@ static void _ephoto_display_usage(void);
 int
 main(int argc, char *argv[])
 {
-   int id_num = 0, r = 0;
+   int id_num = 0;
+   int r = 0;
 
    elm_init(argc, argv);
    eio_init();
