@@ -264,7 +264,11 @@ struct _Color
 static void
 _e_thumb_generate(E_Thumb *eth)
 {
-   char buf[4096], dbuf[4096], *id, *td, *ext = NULL;
+   char buf[8096];
+   char  dbuf[8096];
+   char  *id;
+   char  *td;
+   char  *ext = NULL;
    Evas *evas = NULL, *evas_im = NULL;
    Ecore_Evas *ee = NULL, *ee_im = NULL;
    Evas_Object *im = NULL, *edje = NULL;
