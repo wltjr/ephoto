@@ -5,10 +5,9 @@
 
 A comprehensive image viewer written using the core EFL.
 
-This is a current development version, changes to be offered for acceptance
-upstream, mostly seeking to address annoyances and some bugs, rather than
-feature enhancement; that may come later. This is mostly intended to further
-ephoto and give it new life in the EFL app community.
+This version is a fork, a break from the EFL/Enlightenment community, and
+changes here shall not be backported to other versions without retaining
+commit history and authorship for proper open source accreditation!
 
-For more information, please visit:
-https://www.enlightenment.org/about-ephoto.md
+Others may resume their efforts, like all things in FOSS, nobody cares till
+you do, then everyone has an opinion and is interested...
