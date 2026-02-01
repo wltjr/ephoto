@@ -854,34 +854,30 @@ ephoto_config_init(Ephoto *ephoto)
    C_VAL(D, T, firstrun, EET_T_INT);
    C_VAL(D, T, folders, EET_T_INT);
    C_VAL(D, T, thumbnail_aspect, EET_T_INT);
-   switch (_ephoto_config_load(ephoto))
-     {
-      case 0:
-        /* Start a new config */
-        ephoto->config->config_version = CONFIG_VERSION;
-        ephoto->config->slideshow_timeout = 4.0;
-        ephoto->config->slideshow_transition = eina_stringshare_add("fade");
-        ephoto->config->window_width = 900 * elm_config_scale_get();
-        ephoto->config->window_height = 500 * elm_config_scale_get();
-        ephoto->config->fsel_hide = 0;
-        ephoto->config->left_size = .25;
-        ephoto->config->right_size = .25;
-        // Some systems use a symlink to the user's home directory (e.g. FreeBSD).
-        home = ecore_file_realpath(eina_environment_home_get());
-        ephoto->config->open = eina_stringshare_add(home);
-        free(home);
-        ephoto->config->prompts = 1;
-        ephoto->config->drop = 0;
-        ephoto->config->movess = 1;
-        ephoto->config->smooth = 1;
-        ephoto->config->firstrun = 1;
-        ephoto->config->folders = 1;
-        ephoto->config->thumbnail_aspect = 0;
-        break;
 
-      default:
+    if (_ephoto_config_load(ephoto) != 0)
         return EINA_TRUE;
-     }
+
+    /* Start a new config */
+    ephoto->config->config_version = CONFIG_VERSION;
+    ephoto->config->slideshow_timeout = 4.0;
+    ephoto->config->slideshow_transition = eina_stringshare_add("fade");
+    ephoto->config->window_width = 900 * elm_config_scale_get();
+    ephoto->config->window_height = 500 * elm_config_scale_get();
+    ephoto->config->fsel_hide = 0;
+    ephoto->config->left_size = .25;
+    ephoto->config->right_size = .25;
+    // Some systems use a symlink to the user's home directory (e.g. FreeBSD).
+    home = ecore_file_realpath(eina_environment_home_get());
+    ephoto->config->open = eina_stringshare_add(home);
+    free(home);
+    ephoto->config->prompts = 1;
+    ephoto->config->drop = 0;
+    ephoto->config->movess = 1;
+    ephoto->config->smooth = 1;
+    ephoto->config->firstrun = 1;
+    ephoto->config->folders = 1;
+    ephoto->config->thumbnail_aspect = 0;
 
    ephoto_config_save(ephoto);
    return EINA_TRUE;
