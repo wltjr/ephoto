@@ -32,15 +32,6 @@ _ephoto_apply_color_adjustment(Ephoto_Color *eco, unsigned int *image_data,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int cc;
 
    im_data = malloc(sizeof(unsigned int) * eco->w * eco->h);
    if (image_data)
@@ -51,12 +42,21 @@ _ephoto_apply_color_adjustment(Ephoto_Color *eco, unsigned int *image_data,
 
    im_data_new = malloc(sizeof(unsigned int) * eco->w * eco->h);
 
-   for (y = 0; y < eco->h; y++)
+   for (Evas_Coord y = 0; y < eco->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * eco->w);
         p2 = im_data_new + (y * eco->w);
-        for (x = 0; x < eco->w; x++)
+        for (Evas_Coord x = 0; x < eco->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int cc;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -179,9 +179,6 @@ _color_apply(void *data, int type EINA_UNUSED,
              void *event_info EINA_UNUSED)
 {
    Ephoto_Color *eco = data;
-   unsigned int *image_data;
-   Evas_Coord w;
-   Evas_Coord h;
 
    if (elm_slider_value_get(eco->rslider) == 0 &&
        elm_slider_value_get(eco->gslider) == 0 &&
@@ -191,6 +188,10 @@ _color_apply(void *data, int type EINA_UNUSED,
      }
    else
      {
+        unsigned int *image_data;
+        Evas_Coord w;
+        Evas_Coord h;
+
         image_data =
           evas_object_image_data_get(eco->image, EINA_FALSE);
         evas_object_image_size_get(eco->image, &w, &h);
