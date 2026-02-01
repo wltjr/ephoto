@@ -189,7 +189,7 @@ _drag_data_extract(char **drag_data)
                s1[0] = '\0';
              else
                {
-                  char *s2 = s + 1;
+                  const char *s2 = s + 1;
 
                   if (s2[0] == '\r')
                     {
