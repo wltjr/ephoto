@@ -214,7 +214,8 @@ _drag_data_extract(char **drag_data)
 static int
 _entry_cmp(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
 
    a = elm_object_item_data_get(pa);
    b = elm_object_item_data_get(pb);
@@ -619,7 +620,8 @@ _fsel_mouse_up_cb(void *data, Evas *e EINA_UNUSED,
    Evas_Object *menu;
    Elm_Object_Item *item;
    Evas_Event_Mouse_Up *info = event_info;
-   Evas_Coord x, y;
+   Evas_Coord x;
+   Evas_Coord y;
 
    evas_pointer_canvas_xy_get(evas_object_evas_get(db->fsel), &x, &y);
    item = elm_genlist_at_xy_item_get(db->fsel, x, y, 0);
@@ -778,7 +780,8 @@ _monitor_cb(void *data, int type,
    Ephoto_Entry *e;
    Ecore_Event_Handler *handler;
    Eio_Monitor_Event *ev = event;
-   char file[PATH_MAX], dir[PATH_MAX];
+   char file[PATH_MAX];
+   char dir[PATH_MAX];
    const Elm_Genlist_Item_Class *ic;
    char buf[PATH_MAX];
    char *freedir;
@@ -923,7 +926,9 @@ _top_monitor_cb(void *data, int type,
    Ephoto_Entry *e;
    Eio_Monitor_Event *ev = event;
    const Elm_Genlist_Item_Class *ic;
-   char buf[PATH_MAX], file[PATH_MAX], dir[PATH_MAX];
+   char buf[PATH_MAX];
+   char file[PATH_MAX];
+   char dir[PATH_MAX];
    char *freedir;
 
    if (!db)
@@ -1230,10 +1235,15 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, char *rp)
 {
    Ephoto_Directory_Browser *db =
      evas_object_data_get(ephoto->dir_browser, "directory_browser");
-   Eina_List *dirs = NULL, *l;
-   Elm_Object_Item *next = NULL, *cur = NULL;
+   Eina_List *dirs = NULL;
+   Eina_List *l;
+   Elm_Object_Item *next = NULL;
+   Elm_Object_Item *cur = NULL;
    Ephoto_Entry *tentry = NULL;
-   char top[PATH_MAX], path[PATH_MAX], *dir, *end_dir;
+   char top[PATH_MAX];
+   char path[PATH_MAX];
+   char *dir;
+   char *end_dir;
    int count = 0;
    const Elm_Genlist_Item_Class *tic;
 
