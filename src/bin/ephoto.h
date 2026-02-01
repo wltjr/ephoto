@@ -306,8 +306,8 @@ struct _Ephoto
    Eio_File                  *ls;
 
    Evas_Object               *prefs_win;
-   Ephoto_State               state, prev_state;
-
+   Ephoto_State               state;
+   Ephoto_State               prev_state;
    Ephoto_Config             *config;
    Ephoto_Sort                sort;
 };
@@ -358,8 +358,10 @@ int           ephoto_entries_cmp(const void *pa, const void *pb);
 static inline Eina_Bool
 _ephoto_eina_file_direct_info_image_useful(const Eina_File_Direct_Info *info)
 {
-   const char *type, *bname;
-   int i = 0, count = 0;
+   const char *type;
+   const char *bname;
+   int i = 0;
+   int count = 0;
 
    const char *filters[] = {
       "png", "jpeg", "jpg", "eet", "xpm", "tiff", "gif", "svg", "webp",
@@ -394,7 +396,8 @@ _ephoto_eina_file_direct_info_image_useful(const Eina_File_Direct_Info *info)
 static inline Eina_Bool
 _ephoto_file_image_can_save(const char *ext)
 {
-   int i = 0, count = 0;
+   int i = 0;
+   int count = 0;
 
    const char *filters[] = {
       "png", "jpeg", "jpg", "eet", "xpm", "tiff", "tif", "gif", "svg", "webp",
