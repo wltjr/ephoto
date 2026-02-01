@@ -99,7 +99,12 @@ _open_hv_select(void *data, Evas_Object *obj, void *event_info)
 static void
 _config_general(Ephoto *ephoto, Evas_Object *parent)
 {
-   Evas_Object *table, *check, *hoversel, *entry, *label, *spinner;
+   Evas_Object *table;
+   Evas_Object *check;
+   Evas_Object *hoversel;
+   Evas_Object *entry;
+   Evas_Object *label;
+   Evas_Object *spinner;
    char buf[PATH_MAX];
 
    table = elm_table_add(parent);
@@ -227,7 +232,8 @@ static Eina_List *
 _ephoto_transitions_list_get(const char *str)
 {
    Eina_List *list = NULL;
-   const char *s, *b;
+   const char *s;
+   const char *b;
    if (!str) return NULL;
    for (b = s = str; 1; s++)
      {
@@ -252,7 +258,11 @@ static void
 _config_slideshow(Ephoto *ephoto, Evas_Object *parent)
 {
    Eina_List *transitions;
-   Evas_Object *table, *check, *label, *spinner, *hoversel;
+   Evas_Object *table;
+   Evas_Object *check;
+   Evas_Object *label;
+   Evas_Object *spinner;
+   Evas_Object *hoversel;
    const Eina_List *l;
    const char *transition;
    char buf[PATH_MAX];
@@ -396,7 +406,8 @@ _link_anchor(void *data, Evas_Object *obj, void *event_info)
 static Evas_Object *
 _config_bindings(Evas_Object *parent)
 {
-   Evas_Object *box, *entry;
+   Evas_Object *box;
+   Evas_Object *entry;
    Eina_Strbuf *sbuf = eina_strbuf_new();
 
    box = elm_box_add(parent);
@@ -468,7 +479,10 @@ _config_bindings(Evas_Object *parent)
 static Evas_Object *
 _config_about(Evas_Object *parent)
 {
-   Evas_Object *box, *entry, *img, *lbl;
+   Evas_Object *box;
+   Evas_Object *entry;
+   Evas_Object *img;
+   Evas_Object *lbl;
    Eina_Strbuf *sbuf = eina_strbuf_new();
    char ver[PATH_MAX];
    FILE *f;
@@ -665,9 +679,21 @@ save_end:
 void
 ephoto_config_main(Ephoto *ephoto)
 {
-   Evas_Object *popup, *box, *scroller, *table, *list, *ic;
-   Evas_Object *slideshow, *settings, *kb, *about, *pager;
-   Elm_Object_Item *slideshowi, *settingsi, *kbi, *abouti;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *scroller;
+   Evas_Object *table;
+   Evas_Object *list;
+   Evas_Object *ic;
+   Evas_Object *slideshow;
+   Evas_Object *settings;
+   Evas_Object *kb;
+   Evas_Object *about;
+   Evas_Object *pager;
+   Elm_Object_Item *slideshowi;
+   Elm_Object_Item *settingsi;
+   Elm_Object_Item *kbi;
+   Elm_Object_Item *abouti;
 
    popup = elm_popup_add(ephoto->win);
    elm_popup_scrollable_set(popup, EINA_TRUE);
