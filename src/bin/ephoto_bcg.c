@@ -59,9 +59,9 @@ _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
-             bb = (int)b + ebcg->brightness;
-             gg = (int)g + ebcg->brightness;
-             rr = (int)r + ebcg->brightness;
+             bb = b + ebcg->brightness;
+             gg = g + ebcg->brightness;
+             rr = r + ebcg->brightness;
              bb = ephoto_normalize_color(bb);
              gg = ephoto_normalize_color(gg);
              rr = ephoto_normalize_color(rr);
