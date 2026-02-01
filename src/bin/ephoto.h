@@ -360,7 +360,6 @@ _ephoto_eina_file_direct_info_image_useful(const Eina_File_Direct_Info *info)
 {
    const char *type;
    const char *bname;
-   int i = 0;
    int count = 0;
 
    const char *filters[] = {
@@ -384,7 +383,7 @@ _ephoto_eina_file_direct_info_image_useful(const Eina_File_Direct_Info *info)
      return EINA_FALSE;
    count = sizeof(filters) / sizeof(filters[0]);
 
-   for (i = 0; i < count; i++)
+   for (int i = 0; i < count; i++)
      {
         if (!strcasecmp(type + 1, filters[i]))
           return evas_object_image_extension_can_load_get(bname);
@@ -396,7 +395,6 @@ _ephoto_eina_file_direct_info_image_useful(const Eina_File_Direct_Info *info)
 static inline Eina_Bool
 _ephoto_file_image_can_save(const char *ext)
 {
-   int i = 0;
    int count = 0;
 
    const char *filters[] = {
@@ -404,7 +402,7 @@ _ephoto_file_image_can_save(const char *ext)
       "pmaps", "bmp", "wbmp", "ico", "generic"
    };
    count = sizeof(filters) / sizeof(filters[0]);
-   for (i = 0; i < count; i++)
+   for (int i = 0; i < count; i++)
      {
         if (!strcasecmp(ext, filters[i]))
           return EINA_TRUE;
