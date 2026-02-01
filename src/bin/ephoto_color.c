@@ -60,19 +60,19 @@ _ephoto_apply_color_adjustment(Ephoto_Color *eco, unsigned int *image_data,
                {
                 case EPHOTO_COLOR_ADJUST_RED:
                   eco->red = adjust;
-                  cc = (int)r + eco->red;
+                  cc = r + eco->red;
                   r = cc;
                   break;
 
                 case EPHOTO_COLOR_ADJUST_BLUE:
                   eco->blue = adjust;
-                  cc = (int)b + eco->blue;
+                  cc = b + eco->blue;
                   b = cc;
                   break;
 
                 case EPHOTO_COLOR_ADJUST_GREEN:
                   eco->green = adjust;
-                  cc = (int)g + eco->green;
+                  cc = g + eco->green;
                   g = cc;
                   break;
 
