@@ -24,17 +24,6 @@ _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
 
    im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
    if (image_data)
@@ -46,12 +35,23 @@ _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
    ebcg->brightness = brightness;
    im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
 
-   for (y = 0; y < ebcg->h; y++)
+   for (Evas_Coord y = 0; y < ebcg->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
-        for (x = 0; x < ebcg->w; x++)
+        for (Evas_Coord x = 0; x < ebcg->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -85,19 +85,8 @@ _ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
    int top;
    int bottom;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
    float factor;
 
    im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
@@ -113,12 +102,23 @@ _ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
    factor = (float)top / (float)bottom;
    im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
 
-   for (y = 0; y < ebcg->h; y++)
+   for (Evas_Coord y = 0; y < ebcg->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
-        for (x = 0; x < ebcg->w; x++)
+        for (Evas_Coord x = 0; x < ebcg->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -152,17 +152,6 @@ _ephoto_bcg_adjust_gamma(Ephoto_BCG *ebcg, double gamma,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
 
    im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
    if (image_data)
@@ -174,12 +163,23 @@ _ephoto_bcg_adjust_gamma(Ephoto_BCG *ebcg, double gamma,
    ebcg->gamma = 1 / gamma;
    im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
 
-   for (y = 0; y < ebcg->h; y++)
+   for (Evas_Coord y = 0; y < ebcg->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
-        for (x = 0; x < ebcg->w; x++)
+        for (Evas_Coord x = 0; x < ebcg->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -277,9 +277,6 @@ _bcg_apply(void *data, int type EINA_UNUSED,
            void *event_info EINA_UNUSED)
 {
    Ephoto_BCG *ebcg = data;
-   unsigned int *image_data;
-   Evas_Coord w;
-   Evas_Coord h;
 
    if (elm_slider_value_get(ebcg->bslider) == 0 &&
        elm_slider_value_get(ebcg->cslider) == 0 &&
@@ -289,6 +286,10 @@ _bcg_apply(void *data, int type EINA_UNUSED,
      }
    else
      {
+        Evas_Coord w;
+        Evas_Coord h;
+        unsigned int *image_data;
+
         image_data =
           evas_object_image_data_get(ebcg->image, EINA_FALSE);
         evas_object_image_size_get(ebcg->image, &w, &h);
