@@ -219,11 +219,6 @@ _apply_crop(void *data, Evas_Object *obj EINA_UNUSED,
    Evas_Coord ny;
    Evas_Coord nw;
    Evas_Coord nh;
-   Evas_Coord i;
-   Evas_Coord j;
-   Evas_Coord tmpx;
-   Evas_Coord tmpy;
-   Evas_Coord ind;
    Evas_Coord index;
    double scalex;
    double scaley;
@@ -253,11 +248,16 @@ _apply_crop(void *data, Evas_Object *obj EINA_UNUSED,
    index = 0;
    idata_new = malloc(sizeof(unsigned int) * nw * nh);
 
-   for (i = 0; i < nh; i++)
+   for (Evas_Coord i = 0; i < nh; i++)
      {
+        Evas_Coord tmpy;
+
         tmpy = (i + ny) * iw;
-        for (j = 0; j < nw; j++)
+        for (Evas_Coord j = 0; j < nw; j++)
           {
+            Evas_Coord ind;
+            Evas_Coord tmpx;
+
              tmpx = j + nx;
              ind = tmpy + tmpx;
              idata_new[index] = idata[ind];
