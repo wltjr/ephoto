@@ -7,7 +7,8 @@ typedef struct _E_Thumb E_Thumb;
 struct _E_Thumb
 {
    int           objid;
-   int           w, h;
+   int           w;
+   int           h;
    const char   *file;
    const char   *key;
    char         *sort_id;
@@ -129,7 +130,8 @@ e_thumb_icon_size_set(Evas_Object *obj, Evas_Coord w, Evas_Coord h)
 void
 e_thumb_icon_begin(Evas_Object *obj)
 {
-   E_Thumb *eth, *eth2;
+   E_Thumb *eth;
+   E_Thumb *eth2;
    char buf[4096];
 
    eth = evas_object_data_get(obj, "e_thumbdata");
@@ -303,7 +305,8 @@ static void
 _e_thumb_gen_begin(int objid, const char *file, const char *key, int w, int h)
 {
    char *buf;
-   int l1, l2;
+   int l1;
+   int l2;
    Ecore_Ipc_Client *cli;
 
    /* send thumb req */
