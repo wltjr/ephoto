@@ -21,10 +21,22 @@ struct _Ephoto_HSV
 unsigned int *
 _ephoto_hsv_adjust_hue(Ephoto_HSV *ehsv, double hue, unsigned int *image_data)
 {
-   unsigned int *im_data, *im_data_new, *p1, *p2;
-   Evas_Coord x, y;
-   int a, r, g, b, bb, gg, rr;
-   float hh, s, v;
+   unsigned int *im_data;
+   unsigned int *im_data_new;
+   unsigned int *p1;
+   unsigned int *p2;
+   Evas_Coord x;
+   Evas_Coord y;
+   int a;
+   int r;
+   int g;
+   int b;
+   int bb;
+   int gg;
+   int rr;
+   float hh;
+   float s;
+   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -77,10 +89,22 @@ unsigned int *
 _ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
                               unsigned int *image_data)
 {
-   unsigned int *im_data, *im_data_new, *p1, *p2;
-   Evas_Coord x, y;
-   int a, r, g, b, bb, gg, rr;
-   float hh, s, v;
+   unsigned int *im_data;
+   unsigned int *im_data_new;
+   unsigned int *p1;
+   unsigned int *p2;
+   Evas_Coord x;
+   Evas_Coord y;
+   int a;
+   int r;
+   int g;
+   int b;
+   int bb;
+   int gg;
+   int rr;
+   float hh;
+   float s;
+   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -133,10 +157,22 @@ unsigned int *
 _ephoto_hsv_adjust_value(Ephoto_HSV *ehsv, double value,
                          unsigned int *image_data)
 {
-   unsigned int *im_data, *im_data_new, *p1, *p2;
-   Evas_Coord x, y;
-   int a, r, g, b, bb, gg, rr;
-   float hh, s, v;
+   unsigned int *im_data;
+   unsigned int *im_data_new;
+   unsigned int *p1;
+   unsigned int *p2;
+   Evas_Coord x;
+   Evas_Coord y;
+   int a;
+   int r;
+   int g;
+   int b;
+   int bb;
+   int gg;
+   int rr;
+   float hh;
+   float s;
+   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -190,7 +226,8 @@ _hue_slider_changed(void *data, Evas_Object *obj, void *event_info EINA_UNUSED)
 {
    Ephoto_HSV *ehsv = data;
    double hue;
-   unsigned int *image_data, *image_data_two;
+   unsigned int *image_data;
+   unsigned int *image_data_two;
 
    hue = elm_slider_value_get(obj);
    image_data = _ephoto_hsv_adjust_hue(ehsv, hue, NULL);
@@ -205,7 +242,8 @@ _saturation_slider_changed(void *data, Evas_Object *obj,
 {
    Ephoto_HSV *ehsv = data;
    double saturation;
-   unsigned int *image_data, *image_data_two;
+   unsigned int *image_data;
+   unsigned int *image_data_two;
 
    saturation = elm_slider_value_get(obj);
    image_data = _ephoto_hsv_adjust_saturation(ehsv, saturation, NULL);
@@ -219,7 +257,8 @@ _value_slider_changed(void *data, Evas_Object *obj,
 {
    Ephoto_HSV *ehsv = data;
    double value;
-   unsigned int *image_data, *image_data_two;
+   unsigned int *image_data;
+   unsigned int *image_data_two;
 
    value = elm_slider_value_get(obj);
    image_data = _ephoto_hsv_adjust_value(ehsv, value, NULL);
@@ -250,7 +289,8 @@ _hsv_apply(void *data, int type EINA_UNUSED,
 {
    Ephoto_HSV *ehsv = data;
    unsigned int *image_data;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
 
    if (elm_slider_value_get(ehsv->hslider) == 0 &&
        elm_slider_value_get(ehsv->sslider) == 0 &&
