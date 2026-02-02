@@ -37,7 +37,8 @@ ephoto_file_get_exif_data(const char *file)
    ExifData *ed = exif_data_new_from_file(file);
    ExifEntry *ee = NULL;
    Eina_List *list = NULL;
-   unsigned int tag, val;
+   unsigned int tag;
+   unsigned int val;
    const char *title = NULL;
    char value[1024];
 
@@ -72,9 +73,11 @@ static Eina_Bool
 _exif_items_process(void *data)
 {
    Ephoto_Exif_Animator *animator = data;
-   Evas_Object *label, *entry;
+   Evas_Object *label;
+   Evas_Object *entry;
    int i = 0;
-   const char *value, *key;
+   const char *value;
+   const char *key;
    Ephoto_Exif_Item *eei;
 
    if (animator->processed == animator->count)
@@ -141,8 +144,12 @@ _exif_save_cb(void *data, Evas_Object *obj EINA_UNUSED,
 void
 ephoto_file_exif_data(Ephoto *ephoto, const char *file)
 {
-   Eina_List *list = NULL, *l = NULL;
-   Evas_Object *popup, *box, *scroller, *table;
+   Eina_List *list = NULL;
+   Eina_List *l = NULL;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *scroller;
+   Evas_Object *table;
    Ephoto_Exif_Animator *animator;
    Ephoto_Exif_Item *eei;
 
@@ -211,7 +218,11 @@ _complete_ok(void *data, Evas_Object *obj EINA_UNUSED,
 static void
 _complete(Ephoto *ephoto, const char *title, const char *text)
 {
-   Evas_Object *popup, *box, *label, *ic, *button;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *label;
+   Evas_Object *ic;
+   Evas_Object *button;
 
    popup = elm_popup_add(ephoto->win);
    elm_object_part_text_set(popup, "title,text", title);
@@ -260,7 +271,9 @@ _prompt_cancel(void *data, Evas_Object *obj EINA_UNUSED,
 static Evas_Object *
 _prompt(Ephoto *ephoto, const char *title, const char *text)
 {
-   Evas_Object *popup, *box, *label;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *label;
 
    popup = elm_popup_add(ephoto->win);
    elm_object_part_text_set(popup, "title,text", title);
@@ -394,7 +407,13 @@ _upload_image_complete_cb(void *data, int ev_type EINA_UNUSED, void *event)
    Ephoto *ephoto = evas_object_data_get(ppopup, "ephoto");
    Ecore_Con_Event_Url_Complete *ev = event;
    Ecore_Event_Handler *handler;
-   Evas_Object *popup, *box, *hbox, *label, *entry, *ic, *button;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *hbox;
+   Evas_Object *label;
+   Evas_Object *entry;
+   Evas_Object *ic;
+   Evas_Object *button;
    int ret;
 
    if (ev->url_con != ephoto->url_up)
@@ -489,7 +508,8 @@ _upload_image_complete_cb(void *data, int ev_type EINA_UNUSED, void *event)
      }
    else
      {
-        char buf[PATH_MAX], link[PATH_MAX];
+        char buf[PATH_MAX];
+        char link[PATH_MAX];
 
         snprintf(buf, PATH_MAX, "<a href=\"%s\"><link>%s</link</a>",
                  ephoto->url_ret, ephoto->url_ret);
@@ -514,7 +534,8 @@ _upload_image_xml_parse(void *data, Eina_Simple_XML_Type type,
                         unsigned length EINA_UNUSED)
 {
    Ephoto *ephoto = data;
-   char *linkf, *linkl;
+   char *linkf;
+   char *linkl;
 
    if (type == EINA_SIMPLE_XML_OPEN)
      {
@@ -582,7 +603,11 @@ _new_dir_cancel(void *data, Evas_Object *obj EINA_UNUSED,
 static void
 _new_dir(Ephoto *ephoto, const char *file)
 {
-   Evas_Object *popup, *box, *entry, *button, *ic;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *entry;
+   Evas_Object *button;
+   Evas_Object *ic;
 
    popup = elm_popup_add(ephoto->win);
    elm_object_part_text_set(popup, "title,text", _("New Directory"));
@@ -646,7 +671,8 @@ _rename_confirm(void *data, Evas_Object *obj EINA_UNUSED,
    const char *file = evas_object_data_get(popup, "file");
    const char *text = elm_object_text_get(entry);
    char *escaped = ecore_file_escape_name(text);
-   char new_file_name[PATH_MAX], dir[PATH_MAX];
+   char new_file_name[PATH_MAX];
+   char dir[PATH_MAX];
    int ret;
 
    if (!escaped)
@@ -696,8 +722,14 @@ _rename_cancel(void *data, Evas_Object *obj EINA_UNUSED,
 static void
 _rename_file(Ephoto *ephoto, const char *file)
 {
-   Evas_Object *popup, *box, *entry, *button, *ic;
-   char buf[PATH_MAX], *bn, *string;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *entry;
+   Evas_Object *button;
+   Evas_Object *ic;
+   char buf[PATH_MAX];
+   char *bn;
+   char *string;
 
    popup = elm_popup_add(ephoto->win);
    if (ecore_file_is_dir(file))
@@ -763,7 +795,10 @@ _rename_file(Ephoto *ephoto, const char *file)
 static Evas_Object *
 _processing(Ephoto *ephoto, const char *title, const char *text)
 {
-   Evas_Object *popup, *box, *label, *pb;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *label;
+   Evas_Object *pb;
 
    popup = elm_popup_add(ephoto->win);
    elm_object_part_text_set(popup, "title,text", title);
@@ -833,7 +868,9 @@ _move_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
         if (ecore_file_exists(file) && ecore_file_is_dir(destination) &&
             evas_object_image_extension_can_load_get(file))
           {
-             char dest[PATH_MAX], fp[PATH_MAX], extra[PATH_MAX];
+             char dest[PATH_MAX];
+             char fp[PATH_MAX];
+             char extra[PATH_MAX];
              int ret;
 
              snprintf(fp, PATH_MAX, "%s", file);
@@ -895,7 +932,9 @@ _copy_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
         if (ecore_file_exists(file) && ecore_file_is_dir(destination) &&
             evas_object_image_extension_can_load_get(file))
           {
-             char dest[PATH_MAX], fp[PATH_MAX], extra[PATH_MAX];
+             char dest[PATH_MAX];
+             char fp[PATH_MAX];
+             char extra[PATH_MAX];
              int ret;
 
              snprintf(fp, PATH_MAX, "%s", file);
@@ -959,7 +998,9 @@ _delete_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
           break;
         if (ecore_file_exists(file) && ecore_file_is_dir(ephoto->trash_path))
           {
-             char dest[PATH_MAX], fp[PATH_MAX], extra[PATH_MAX];
+             char dest[PATH_MAX];
+             char fp[PATH_MAX];
+             char extra[PATH_MAX];
              int ret;
              struct stat s;
 #ifdef _WIN32
@@ -1032,7 +1073,9 @@ _delete_dir_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
 
    if (dir)
      {
-        char fp[PATH_MAX], dest[PATH_MAX], extra[PATH_MAX];
+        char fp[PATH_MAX];
+        char dest[PATH_MAX];
+        char extra[PATH_MAX];
         int ret;
 
         snprintf(fp, PATH_MAX, "%s", dir);
@@ -1252,7 +1295,8 @@ _prompt_save_image_as_apply(void *data, Evas_Object *obj, void *event_info)
         Eina_Bool success;
 
         char buf[PATH_MAX];
-        const char *ex, *ext;
+        const char *ex;
+        const char *ext;
 
         ex = strrchr(selected, '.');
         if (!ex)
@@ -1403,7 +1447,9 @@ _prompt_copy_apply(void *data, Evas_Object *obj EINA_UNUSED,
 void
 ephoto_file_save_image(Ephoto *ephoto, Ephoto_Entry *entry, Evas_Object *image)
 {
-   Evas_Object *popup, *ic, *button;
+    Evas_Object *popup;
+    Evas_Object *ic;
+    Evas_Object *button;
 
    if (!_ephoto_file_image_can_save(strrchr(entry->label, '.') + 1))
      {
@@ -1446,8 +1492,11 @@ ephoto_file_save_image(Ephoto *ephoto, Ephoto_Entry *entry, Evas_Object *image)
 void
 ephoto_file_save_image_as(Ephoto *ephoto, Ephoto_Entry *entry, Evas_Object *image)
 {
-   Evas_Object *popup, *fsel, *rect, *table;
-   int h;
+    Evas_Object *popup;
+    Evas_Object *fsel;
+    Evas_Object *rect;
+    Evas_Object *table;
+    int h;
 
    evas_object_geometry_get(ephoto->win, 0, 0, 0, &h);
 
@@ -1491,7 +1540,9 @@ ephoto_file_save_image_as(Ephoto *ephoto, Ephoto_Entry *entry, Evas_Object *imag
 void
 ephoto_file_upload_image(Ephoto *ephoto, Ephoto_Entry *entry)
 {
-   Evas_Object *popup, *ic, *button;
+    Evas_Object *popup;
+    Evas_Object *ic;
+    Evas_Object *button;
 
    popup =
      _prompt(ephoto, _("Upload Image"),
@@ -1544,7 +1595,8 @@ ephoto_file_move(Ephoto *ephoto, Eina_List *files, const char *path)
 {
    if (ephoto->config->prompts)
      {
-        Evas_Object *ic, *button;
+        Evas_Object *ic;
+        Evas_Object *button;
         Evas_Object *popup;
         char move_dir[PATH_MAX];
 
@@ -1595,7 +1647,8 @@ ephoto_file_copy(Ephoto *ephoto, Eina_List *files, const char *path)
      return;
    if (ephoto->config->prompts)
      {
-        Evas_Object *ic, *button;
+        Evas_Object *ic;
+        Evas_Object *button;
         Evas_Object *popup;
         char copy_dir[PATH_MAX];
 
@@ -1648,7 +1701,8 @@ ephoto_file_paste(Ephoto *ephoto, Eina_List *files, Eina_Bool copy, const char *
      {
         if (ephoto->config->prompts)
           {
-             Evas_Object *ic, *button;
+             Evas_Object *ic;
+             Evas_Object *button;
              Evas_Object *popup;
 
              popup =
@@ -1695,7 +1749,8 @@ ephoto_file_paste(Ephoto *ephoto, Eina_List *files, Eina_Bool copy, const char *
      {
         if (ephoto->config->prompts)
           {
-             Evas_Object *ic, *button;
+             Evas_Object *ic;
+             Evas_Object *button;
              Evas_Object *popup;
 
              popup =
@@ -1748,7 +1803,8 @@ ephoto_file_delete(Ephoto *ephoto, Eina_List *files, Eina_File_Type type)
 
    if (ephoto->config->prompts)
      {
-        Evas_Object *ic, *button;
+        Evas_Object *ic;
+        Evas_Object *button;
         Evas_Object *popup;
 
         if (type == EINA_FILE_DIR)
@@ -1807,7 +1863,8 @@ ephoto_file_empty_trash(Ephoto *ephoto, Eina_List *files)
      return;
    if (ephoto->config->prompts)
      {
-        Evas_Object *ic, *button;
+        Evas_Object *ic;
+        Evas_Object *button;
         Evas_Object *popup;
 
         popup =
