@@ -35,23 +35,23 @@ Eina_List *
 ephoto_file_get_exif_data(const char *file)
 {
    ExifData *ed = exif_data_new_from_file(file);
-   ExifEntry *ee = NULL;
    Eina_List *list = NULL;
-   unsigned int tag;
-   unsigned int val;
-   const char *title = NULL;
-   char value[1024];
 
    if (!ed) return NULL;
-   for (tag = 0; tag < 0xffff; tag++)
+   for (unsigned int tag = 0; tag < 0xffff; tag++)
      {
+        const char *title = NULL;
+
         title = exif_tag_get_title(tag);
-        for (val = 0; val < EXIF_IFD_COUNT; val++)
+        for (unsigned int val = 0; val < EXIF_IFD_COUNT; val++)
           {
+            ExifEntry *ee = NULL;
+
              ee = exif_content_get_entry(ed->ifd[val], tag);
              if (ee)
                {
                   Ephoto_Exif_Item *eei;
+                  char value[1024];
 
                   eei = calloc(1, sizeof(Ephoto_Exif_Item));
                   eei->tag = tag;
@@ -881,9 +881,7 @@ _move_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
                            basename(fp));
                   if (ecore_file_exists(extra))
                     {
-                       int count;
-
-                       for (count = 2; ecore_file_exists(extra); count++)
+                       for (int count = 2; ecore_file_exists(extra); count++)
                          {
                             memset(extra, 0, sizeof(extra));
                             snprintf(extra, PATH_MAX, "%s/Copy%dOf%s",
@@ -945,9 +943,7 @@ _copy_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
                            basename(fp));
                   if (ecore_file_exists(extra))
                     {
-                       int count;
-
-                       for (count = 2; ecore_file_exists(extra); count++)
+                       for (int count = 2; ecore_file_exists(extra); count++)
                          {
                             memset(extra, 0, PATH_MAX);
                             snprintf(extra, PATH_MAX, "%s/Copy%dOf%s",
@@ -1025,9 +1021,7 @@ _delete_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
                                      basename(fp));
                             if (ecore_file_exists(extra))
                               {
-                                 int count;
-
-                                 for (count = 2; ecore_file_exists(extra); count++)
+                                 for (int count = 2; ecore_file_exists(extra); count++)
                                    {
                                       memset(extra, 0, sizeof(extra));
                                       snprintf(extra, PATH_MAX, "%s/Copy%dOf%s",
@@ -1088,8 +1082,7 @@ _delete_dir_thread_cb(void *data, Ecore_Thread *et EINA_UNUSED)
                            basename(fp));
                   if (ecore_file_exists(extra))
                     {
-                       int count;
-                       for (count = 2; ecore_file_exists(extra); count++)
+                       for (int count = 2; ecore_file_exists(extra); count++)
                          {
                             memset(extra, 0, sizeof(extra));
                             snprintf(extra, PATH_MAX, "%s/Copy%dOf%s",
