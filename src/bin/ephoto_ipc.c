@@ -75,15 +75,8 @@ _e_ipc_cb_client_data(void *data EINA_UNUSED, int type EINA_UNUSED, void *event)
    e = event;
    if (ecore_ipc_client_server_get(e->client) != _e_ipc_server)
      return ECORE_CALLBACK_PASS_ON;
-   switch (e->major)
-     {
-      case EPHOTO_IPC_DOMAIN_THUMB:
+    if (e->major == EPHOTO_IPC_DOMAIN_THUMB)
         e_thumb_client_data(e);
-        break;
-
-      default:
-        break;
-     }
    return ECORE_CALLBACK_PASS_ON;
 }
 
