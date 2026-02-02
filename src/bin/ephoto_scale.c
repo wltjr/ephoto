@@ -14,7 +14,8 @@ struct _Ephoto_Scale
    Eina_List        *handlers;
    double            aspectw;
    double            aspecth;
-   Evas_Coord        w, h;
+   Evas_Coord        w;
+   Evas_Coord        h;
    unsigned int     *original_im_data;
 };
 
@@ -101,7 +102,9 @@ _es_apply(void *data, int type EINA_UNUSED,
    unsigned int *im_data;
    const char *key;
    Evas_Object *im;
-   int w, h, alpha;
+   int w;
+   int h;
+   int alpha;
    Ecore_Evas *ee;
    Evas *eecanvas;
 
