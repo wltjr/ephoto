@@ -22,7 +22,6 @@ _reye_clicked(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
 {
    Ephoto_Reye *er = data;
    unsigned int *im_data;
-   unsigned int *p1;
    Evas_Coord imx;
    Evas_Coord imy;
    Evas_Coord imw;
@@ -33,14 +32,8 @@ _reye_clicked(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
    Evas_Coord yadj;
    Evas_Coord nx;
    Evas_Coord ny;
-   Evas_Coord xx;
-   Evas_Coord yy;
    Evas_Coord nnx;
    Evas_Coord nny;
-   int a;
-   int r;
-   int g;
-   int b;
    double scalex;
    double scaley;
 
@@ -70,12 +63,18 @@ _reye_clicked(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
      memcpy(im_data, er->original_im_data,
             sizeof(unsigned int) * er->w * er->h);
 
-   for (yy = -er->rad; yy <= er->rad; yy++)
+   for (Evas_Coord yy = -er->rad; yy <= er->rad; yy++)
      {
-        for (xx = -er->rad; xx <= er->rad; xx++)
+        for (Evas_Coord xx = -er->rad; xx <= er->rad; xx++)
           {
              if ((xx * xx) + (yy * yy) <= (er->rad * er->rad))
                {
+                unsigned int *p1;
+                int a;
+                int r;
+                int g;
+                int b;
+
                   nnx = nx + xx;
                   nny = ny + yy;
 
@@ -135,9 +134,6 @@ _reye_apply(void *data, int type EINA_UNUSED,
             void *event_info EINA_UNUSED)
 {
    Ephoto_Reye *er = data;
-   unsigned int *image_data;
-   Evas_Coord w;
-   Evas_Coord h;
 
    if (!er->edited_im_data)
      {
@@ -145,6 +141,10 @@ _reye_apply(void *data, int type EINA_UNUSED,
      }
    else
      {
+        unsigned int *image_data;
+        Evas_Coord w;
+        Evas_Coord h;
+
         image_data =
           evas_object_image_data_get(er->image, EINA_FALSE);
         evas_object_image_size_get(er->image, &w, &h);
