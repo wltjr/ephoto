@@ -23,20 +23,6 @@ _ephoto_hsv_adjust_hue(Ephoto_HSV *ehsv, double hue, unsigned int *image_data)
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
-   float hh;
-   float s;
-   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -47,12 +33,26 @@ _ephoto_hsv_adjust_hue(Ephoto_HSV *ehsv, double hue, unsigned int *image_data)
 
    im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
 
-   for (y = 0; y < ehsv->h; y++)
+   for (Evas_Coord y = 0; y < ehsv->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ehsv->w);
         p2 = im_data_new + (y * ehsv->w);
-        for (x = 0; x < ehsv->w; x++)
+        for (Evas_Coord x = 0; x < ehsv->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+            float hh;
+            float s;
+            float v;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -91,20 +91,6 @@ _ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
-   float hh;
-   float s;
-   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -115,12 +101,26 @@ _ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
 
    im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
 
-   for (y = 0; y < ehsv->h; y++)
+   for (Evas_Coord y = 0; y < ehsv->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ehsv->w);
         p2 = im_data_new + (y * ehsv->w);
-        for (x = 0; x < ehsv->w; x++)
+        for (Evas_Coord x = 0; x < ehsv->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+            float hh;
+            float s;
+            float v;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -159,20 +159,6 @@ _ephoto_hsv_adjust_value(Ephoto_HSV *ehsv, double value,
 {
    unsigned int *im_data;
    unsigned int *im_data_new;
-   unsigned int *p1;
-   unsigned int *p2;
-   Evas_Coord x;
-   Evas_Coord y;
-   int a;
-   int r;
-   int g;
-   int b;
-   int bb;
-   int gg;
-   int rr;
-   float hh;
-   float s;
-   float v;
 
    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
    if (image_data)
@@ -183,12 +169,26 @@ _ephoto_hsv_adjust_value(Ephoto_HSV *ehsv, double value,
 
    im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
 
-   for (y = 0; y < ehsv->h; y++)
+   for (Evas_Coord y = 0; y < ehsv->h; y++)
      {
+        unsigned int *p1;
+        unsigned int *p2;
+
         p1 = im_data + (y * ehsv->w);
         p2 = im_data_new + (y * ehsv->w);
-        for (x = 0; x < ehsv->w; x++)
+        for (Evas_Coord x = 0; x < ehsv->w; x++)
           {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+            float hh;
+            float s;
+            float v;
+
              b = (int)((*p1) & 0xff);
              g = (int)((*p1 >> 8) & 0xff);
              r = (int)((*p1 >> 16) & 0xff);
@@ -288,9 +288,6 @@ _hsv_apply(void *data, int type EINA_UNUSED,
            void *event_info EINA_UNUSED)
 {
    Ephoto_HSV *ehsv = data;
-   unsigned int *image_data;
-   Evas_Coord w;
-   Evas_Coord h;
 
    if (elm_slider_value_get(ehsv->hslider) == 0 &&
        elm_slider_value_get(ehsv->sslider) == 0 &&
@@ -300,6 +297,10 @@ _hsv_apply(void *data, int type EINA_UNUSED,
      }
    else
      {
+        unsigned int *image_data;
+        Evas_Coord w;
+        Evas_Coord h;
+
         image_data =
           evas_object_image_data_get(ehsv->image, EINA_FALSE);
         evas_object_image_size_get(ehsv->image, &w, &h);
