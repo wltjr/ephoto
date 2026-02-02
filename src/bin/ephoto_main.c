@@ -252,7 +252,8 @@ _resize_cb(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
            void *event_info EINA_UNUSED)
 {
    Ephoto *ephoto = data;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
 
    if (elm_win_fullscreen_get(ephoto->win))
      return;
@@ -363,7 +364,9 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
 {
    Ephoto *ephoto = calloc(1, sizeof(Ephoto));
    Evas_Object *ic, *but;
-   char buf[PATH_MAX], config[PATH_MAX], trash[PATH_MAX];
+   char buf[PATH_MAX];
+   char config[PATH_MAX];
+   char trash[PATH_MAX];
    int ret;
 
    EINA_SAFETY_ON_NULL_RETURN_VAL(ephoto, NULL);
@@ -668,9 +671,11 @@ ephoto_title_set(Ephoto *ephoto, const char *title)
 int
 ephoto_entries_cmp(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a = pa, *b = pb;
+   const Ephoto_Entry *a = pa;
+   const Ephoto_Entry *b = pb;
    int i = 0;
-   long long moda, modb;
+   long long moda;
+   long long modb;
 
    i = strcasecmp(a->basename, b->basename);
    moda = ecore_file_mod_time(a->path);
@@ -851,7 +856,8 @@ _monitor_cb(void *data, int type,
 {
    Ephoto *ephoto = data;
    Eio_Monitor_Event *ev = event;
-   char file[PATH_MAX], dir[PATH_MAX];
+   char file[PATH_MAX];
+   char dir[PATH_MAX];
    char *freedir;
 
    snprintf(file, PATH_MAX, "%s", ev->filename);
