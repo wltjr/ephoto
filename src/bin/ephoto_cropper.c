@@ -640,7 +640,8 @@ _image_resize(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
    evas_object_geometry_get(ec->layout, &sx, &sy, &sw, &sh);
    evas_object_image_size_get(ec->image, &iw, &ih);
 
-   Evas_Coord nw, nh;
+   Evas_Coord nw;
+   Evas_Coord nh;
 
    if (sw > sh)
      {
@@ -648,7 +649,8 @@ _image_resize(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
         nh = ih * ((double)sw / (double)iw);
         if (nh > sh)
           {
-             Evas_Coord onw, onh;
+             Evas_Coord onw;
+             Evas_Coord onh;
 
              onw = nw;
              onh = nh;
@@ -662,7 +664,8 @@ _image_resize(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
         nw = iw * ((double)sh / (double)ih);
         if (nw > sw)
           {
-             Evas_Coord onw, onh;
+             Evas_Coord onw;
+             Evas_Coord onh;
 
              onw = nw;
              onh = nh;
