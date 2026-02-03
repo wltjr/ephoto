@@ -23,118 +23,24 @@ typedef enum {
     HUE, SATURATION, VALUE
 } _Ephoto_HSV_ADJUST;
 
-unsigned int
-_ephoto_hsv_adjust_img(unsigned int *p1, double *hsv, _Ephoto_HSV_ADJUST adjust)
-{
-    int a;
-    int r;
-    int g;
-    int b;
-    int bb;
-    int gg;
-    int rr;
-    float hh;
-    float s;
-    float v;
-
-    b = (int)((*p1) & 0xff);
-    g = (int)((*p1 >> 8) & 0xff);
-    r = (int)((*p1 >> 16) & 0xff);
-    a = (int)((*p1 >> 24) & 0xff);
-    b = ephoto_mul_color_alpha(b, a);
-    g = ephoto_mul_color_alpha(g, a);
-    r = ephoto_mul_color_alpha(r, a);
-    evas_color_rgb_to_hsv(r, g, b, &hh, &s, &v);
-    if (HUE == adjust)
-    {
-        hh += *hsv;
-        if (hh < 0)
-        hh += 360;
-        if (hh > 360)
-        hh -= 360;
-    }
-    else if (SATURATION == adjust)
-    {
-        s += s * ((float)*hsv / 100);
-        if (s < 0)
-        s = 0;
-        if (s > 1)
-        s = 1;
-    }
-    else if (VALUE == adjust)
-    {
-        v += (v * ((float)*hsv / 100));
-        if (v < 0)
-        v = 0;
-        if (v > 1)
-        v = 1;
-    }
-    evas_color_hsv_to_rgb(hh, s, v, &rr, &gg, &bb);
-    bb = ephoto_normalize_color(bb);
-    gg = ephoto_normalize_color(gg);
-    rr = ephoto_normalize_color(rr);
-    bb = ephoto_demul_color_alpha(bb, a);
-    gg = ephoto_demul_color_alpha(gg, a);
-    rr = ephoto_demul_color_alpha(rr, a);
-
-    return (a << 24) | (rr << 16) | (gg << 8) | bb;
-}
-
 unsigned int *
-_ephoto_hsv_adjust_hue(Ephoto_HSV *ehsv, double hue, unsigned int *image_data)
+_ephoto_hsv_adjust(Ephoto_HSV *ehsv, double *hsv, unsigned int *image_data,
+                   _Ephoto_HSV_ADJUST adjust)
 {
-   unsigned int *im_data;
-   unsigned int *im_data_new;
+    unsigned int *im_data;
+    unsigned int *im_data_new;
 
-   im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ehsv->w * ehsv->h);
-   else
-     memcpy(im_data, ehsv->original_im_data,
-            sizeof(unsigned int) * ehsv->w * ehsv->h);
+    im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
+    if (image_data)
+        memcpy(im_data, image_data, sizeof(unsigned int) * ehsv->w * ehsv->h);
+    else
+        memcpy(im_data, ehsv->original_im_data,
+               sizeof(unsigned int) * ehsv->w * ehsv->h);
 
-   im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
+    im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
 
-   for (Evas_Coord y = 0; y < ehsv->h; y++)
-     {
-        unsigned int *p1;
-        unsigned int *p2;
-
-        p1 = im_data + (y * ehsv->w);
-        p2 = im_data_new + (y * ehsv->w);
-        for (Evas_Coord x = 0; x < ehsv->w; x++) 
-        {
-            _Ephoto_HSV_ADJUST adjust = HUE;
-            *p2 = _ephoto_hsv_adjust_img(p1, &hue, adjust);
-            p2++;
-            p1++;
-        }
-     }
-   ehsv->hue = hue;
-   ephoto_single_browser_image_data_update(ehsv->main, ehsv->image,
-                                           im_data_new, ehsv->w, ehsv->h);
-   free(im_data);
-   return im_data_new;
-}
-
-unsigned int *
-_ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
-                              unsigned int *image_data)
-{
-   unsigned int *im_data;
-   unsigned int *im_data_new;
-
-   im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ehsv->w * ehsv->h);
-   else
-     memcpy(im_data, ehsv->original_im_data,
-            sizeof(unsigned int) * ehsv->w * ehsv->h);
-
-   im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
-
-   for (Evas_Coord y = 0; y < ehsv->h; y++)
-     {
+    for (Evas_Coord y = 0; y < ehsv->h; y++)
+    {
         unsigned int *p1;
         unsigned int *p2;
 
@@ -142,55 +48,95 @@ _ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
         p2 = im_data_new + (y * ehsv->w);
         for (Evas_Coord x = 0; x < ehsv->w; x++)
         {
-            _Ephoto_HSV_ADJUST adjust = SATURATION;
-            *p2 = _ephoto_hsv_adjust_img(p1, &saturation, adjust);
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+            float hh;
+            float s;
+            float v;
+
+            b = (int)((*p1) & 0xff);
+            g = (int)((*p1 >> 8) & 0xff);
+            r = (int)((*p1 >> 16) & 0xff);
+            a = (int)((*p1 >> 24) & 0xff);
+            b = ephoto_mul_color_alpha(b, a);
+            g = ephoto_mul_color_alpha(g, a);
+            r = ephoto_mul_color_alpha(r, a);
+            evas_color_rgb_to_hsv(r, g, b, &hh, &s, &v);
+            if (HUE == adjust)
+            {
+                hh += *hsv;
+                if (hh < 0)
+                    hh += 360;
+                if (hh > 360)
+                    hh -= 360;
+            }
+            else if (SATURATION == adjust)
+            {
+                s += s * ((float)*hsv / 100);
+                if (s < 0)
+                    s = 0;
+                if (s > 1)
+                    s = 1;
+            }
+            else if (VALUE == adjust)
+            {
+                v += (v * ((float)*hsv / 100));
+                if (v < 0)
+                    v = 0;
+                if (v > 1)
+                    v = 1;
+            }
+            evas_color_hsv_to_rgb(hh, s, v, &rr, &gg, &bb);
+            bb = ephoto_normalize_color(bb);
+            gg = ephoto_normalize_color(gg);
+            rr = ephoto_normalize_color(rr);
+            bb = ephoto_demul_color_alpha(bb, a);
+            gg = ephoto_demul_color_alpha(gg, a);
+            rr = ephoto_demul_color_alpha(rr, a);
+
+            *p2 = (a << 24) | (rr << 16) | (gg << 8) | bb;
             p2++;
             p1++;
         }
-     }
-   ehsv->saturation = saturation;
-   ephoto_single_browser_image_data_update(ehsv->main, ehsv->image,
-                                           im_data_new, ehsv->w, ehsv->h);
-   free(im_data);
-   return im_data_new;
+    }
+    if (HUE == adjust)
+        ehsv->hue = *hsv;
+    else if (SATURATION == adjust)
+        ehsv->saturation = *hsv;
+    else if (VALUE == adjust)
+        ehsv->value = *hsv;
+    ephoto_single_browser_image_data_update(ehsv->main, ehsv->image,
+                                            im_data_new, ehsv->w, ehsv->h);
+    free(im_data);
+    return im_data_new;
+}
+
+unsigned int *
+_ephoto_hsv_adjust_hue(Ephoto_HSV *ehsv, double hue, unsigned int *image_data)
+{
+    _Ephoto_HSV_ADJUST adjust = HUE;
+    return _ephoto_hsv_adjust(ehsv, &hue, image_data, adjust);
+}
+
+unsigned int *
+_ephoto_hsv_adjust_saturation(Ephoto_HSV *ehsv, double saturation,
+                              unsigned int *image_data)
+{
+    _Ephoto_HSV_ADJUST adjust = SATURATION;
+    return _ephoto_hsv_adjust(ehsv, &saturation, image_data, adjust);
 }
 
 unsigned int *
 _ephoto_hsv_adjust_value(Ephoto_HSV *ehsv, double value,
                          unsigned int *image_data)
 {
-   unsigned int *im_data;
-   unsigned int *im_data_new;
-
-   im_data = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ehsv->w * ehsv->h);
-   else
-     memcpy(im_data, ehsv->original_im_data,
-            sizeof(unsigned int) * ehsv->w * ehsv->h);
-
-   im_data_new = malloc(sizeof(unsigned int) * ehsv->w * ehsv->h);
-
-   for (Evas_Coord y = 0; y < ehsv->h; y++)
-     {
-        unsigned int *p1;
-        unsigned int *p2;
-
-        p1 = im_data + (y * ehsv->w);
-        p2 = im_data_new + (y * ehsv->w);
-        for (Evas_Coord x = 0; x < ehsv->w; x++) 
-        {
-            _Ephoto_HSV_ADJUST adjust = VALUE;
-            *p2 = _ephoto_hsv_adjust_img(p1, &value, adjust);
-            p2++;
-            p1++;
-        }
-     }
-   ehsv->value = value;
-   ephoto_single_browser_image_data_update(ehsv->main, ehsv->image,
-                                           im_data_new, ehsv->w, ehsv->h);
-   free(im_data);
-   return im_data_new;
+    _Ephoto_HSV_ADJUST adjust = VALUE;
+    return _ephoto_hsv_adjust(ehsv, &value, image_data, adjust);
 }
 
 static void
