@@ -194,48 +194,56 @@ _ephoto_hsv_adjust_value(Ephoto_HSV *ehsv, double value,
 }
 
 static void
-_hue_slider_changed(void *data, Evas_Object *obj, void *event_info EINA_UNUSED)
+_slider_changed(void *data, Evas_Object *obj, _Ephoto_HSV_ADJUST adjust)
 {
    Ephoto_HSV *ehsv = data;
-   double hue;
+   double hsv;
    unsigned int *image_data;
    unsigned int *image_data_two;
 
-   hue = elm_slider_value_get(obj);
-   image_data = _ephoto_hsv_adjust_hue(ehsv, hue, NULL);
-   image_data_two =
-     _ephoto_hsv_adjust_saturation(ehsv, ehsv->saturation, image_data);
-   _ephoto_hsv_adjust_value(ehsv, ehsv->value, image_data_two);
+    hsv = elm_slider_value_get(obj);
+    if (HUE == adjust)
+    {
+        image_data = _ephoto_hsv_adjust_hue(ehsv, hsv, NULL);
+        image_data_two =
+            _ephoto_hsv_adjust_saturation(ehsv, ehsv->saturation, image_data);
+        _ephoto_hsv_adjust_value(ehsv, ehsv->value, image_data_two);
+    }
+    else if (SATURATION == adjust)
+    {
+        image_data = _ephoto_hsv_adjust_saturation(ehsv, hsv, NULL);
+        image_data_two = _ephoto_hsv_adjust_hue(ehsv, ehsv->hue, image_data);
+        _ephoto_hsv_adjust_value(ehsv, ehsv->value, image_data_two);
+    }
+    else if (VALUE == adjust)
+    {
+        image_data = _ephoto_hsv_adjust_value(ehsv, hsv, NULL);
+        image_data_two = _ephoto_hsv_adjust_hue(ehsv, ehsv->hue, image_data);
+        _ephoto_hsv_adjust_saturation(ehsv, ehsv->saturation, image_data_two);
+    }
+}
+
+static void
+_hue_slider_changed(void *data, Evas_Object *obj, void *event_info EINA_UNUSED)
+{
+    _Ephoto_HSV_ADJUST adjust = HUE;
+    _slider_changed(data, obj, adjust);
 }
 
 static void
 _saturation_slider_changed(void *data, Evas_Object *obj,
                            void *event_info EINA_UNUSED)
 {
-   Ephoto_HSV *ehsv = data;
-   double saturation;
-   unsigned int *image_data;
-   unsigned int *image_data_two;
-
-   saturation = elm_slider_value_get(obj);
-   image_data = _ephoto_hsv_adjust_saturation(ehsv, saturation, NULL);
-   image_data_two = _ephoto_hsv_adjust_hue(ehsv, ehsv->hue, image_data);
-   _ephoto_hsv_adjust_value(ehsv, ehsv->value, image_data_two);
+    _Ephoto_HSV_ADJUST adjust = SATURATION;
+    _slider_changed(data, obj, adjust);
 }
 
 static void
 _value_slider_changed(void *data, Evas_Object *obj,
                       void *event_info EINA_UNUSED)
 {
-   Ephoto_HSV *ehsv = data;
-   double value;
-   unsigned int *image_data;
-   unsigned int *image_data_two;
-
-   value = elm_slider_value_get(obj);
-   image_data = _ephoto_hsv_adjust_value(ehsv, value, NULL);
-   image_data_two = _ephoto_hsv_adjust_hue(ehsv, ehsv->hue, image_data);
-   _ephoto_hsv_adjust_saturation(ehsv, ehsv->saturation, image_data_two);
+    _Ephoto_HSV_ADJUST adjust = VALUE;
+    _slider_changed(data, obj, adjust);
 }
 
 static Eina_Bool
