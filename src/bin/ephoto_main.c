@@ -581,7 +581,7 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
                path = ephoto->config->directory;
              else
                path = ephoto->config->open;
-             if ((path) && (!ecore_file_exists(path)))
+             if (path && (!ecore_file_exists(path)))
                path = NULL;
           }
         else if (!ephoto->config->open || path)
