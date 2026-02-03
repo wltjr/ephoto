@@ -112,7 +112,8 @@ _ephoto_update_bottom_bar(Ephoto_Single_Browser *sb)
 {
    Ephoto_Viewer *v = evas_object_data_get(sb->viewer, "viewer");
    char image_info[PATH_MAX], *tmp;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
 
    if (sb->editing)
      return;
@@ -189,8 +190,14 @@ _image_create_icon(void *data, Evas_Object *parent, Evas_Coord *xoff,
 {
    Evas_Object *ic;
    Evas_Object *io = data;
-   const char *f, *g;
-   Evas_Coord x, y, w, h, xm, ym;
+   const char *f;
+   const char *g;
+   Evas_Coord x;
+   Evas_Coord y;
+   Evas_Coord w;
+   Evas_Coord h;
+   Evas_Coord xm;
+   Evas_Coord ym;
 
    elm_image_file_get(io, &f, &g);
    ic = elm_image_add(parent);
@@ -351,7 +358,8 @@ _viewer_zoom_apply(Ephoto_Viewer *v, double zoom)
 {
    v->zoom = zoom;
 
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    Evas_Object *image;
 
    image = v->image;
@@ -365,9 +373,14 @@ _viewer_zoom_apply(Ephoto_Viewer *v, double zoom)
 static void
 _viewer_zoom_fit_apply(Ephoto_Viewer *v)
 {
-   Evas_Coord cw, ch, iw, ih;
+   Evas_Coord cw;
+   Evas_Coord ch;
+   Evas_Coord iw;
+   Evas_Coord ih;
    Evas_Object *image;
-   double zx, zy, zoom;
+   double zx;
+   double zy;
+   double zoom;
 
    image = v->image;
    evas_object_geometry_get(v->scroller, NULL, NULL, &cw, &ch);
@@ -393,7 +406,10 @@ _viewer_resized(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
 
    if (v->zoom_first)
      {
-        Evas_Coord cw, ch, iw, ih;
+        Evas_Coord cw;
+        Evas_Coord ch;
+        Evas_Coord iw;
+        Evas_Coord ih;
         Evas_Object *image;
 
         image = v->image;
@@ -500,7 +516,8 @@ _orient_apply(Ephoto_Single_Browser *sb)
 {
    Ephoto_History *eh = NULL;
    Ephoto_Viewer *v = evas_object_data_get(sb->viewer, "viewer");
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    Eina_List *l;
    char buf[PATH_MAX];
 
@@ -998,7 +1015,11 @@ _reset_image(void *data, Evas_Object *obj EINA_UNUSED,
              void *event_info EINA_UNUSED)
 {
    Ephoto_Single_Browser *sb = data;
-   Evas_Object *popup, *box, *label, *ic, *button;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *label;
+   Evas_Object *ic;
+   Evas_Object *button;
 
    popup = elm_popup_add(sb->ephoto->win);
    elm_object_part_text_set(popup, "title,text", _("Reset Image"));
@@ -1480,7 +1501,8 @@ _viewer_add(Evas_Object *parent, const char *path, Ephoto_Single_Browser *sb)
 {
    Ephoto_Viewer *v;
    int err;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    const char *group;
 
    EINA_SAFETY_ON_NULL_RETURN_VAL(path, NULL);
@@ -1646,7 +1668,8 @@ static void
 _edit_function_item_add(Evas_Object *parent, const char *icon, const char *label,
                         Evas_Smart_Cb callback, void *data)
 {
-   Evas_Object *button, *ic;
+   Evas_Object *button;
+   Evas_Object *ic;
 
    ic = elm_icon_add(parent);
    evas_object_size_hint_min_set(ic, 20 * elm_config_scale_get(),
@@ -1758,7 +1781,11 @@ static void
 _editor_menu(void *data, Evas_Object *obj EINA_UNUSED, void *event_data EINA_UNUSED)
 {
    Ephoto_Single_Browser *sb = data;
-   Evas_Object *frame, *box, *vbox, *sep, *list;
+   Evas_Object *frame;
+   Evas_Object *box;
+   Evas_Object *vbox;
+   Evas_Object *sep;
+   Evas_Object *list;
    Elm_Genlist_Item_Class *itc = elm_genlist_item_class_new();
    Elm_Object_Item *par;
 
@@ -1936,7 +1963,8 @@ static void
 _ephoto_main_edit_menu(Ephoto_Single_Browser *sb)
 {
    Evas_Object *menu;
-   Evas_Coord x, y;
+   Evas_Coord x;
+   Evas_Coord y;
 
    evas_pointer_canvas_xy_get(evas_object_evas_get(sb->main), &x, &y);
    menu = elm_menu_add(sb->ephoto->win);
@@ -2207,7 +2235,8 @@ ephoto_single_browser_entry_set(Evas_Object *obj, Ephoto_Entry *entry)
    Ephoto_Single_Browser *sb = evas_object_data_get(obj, "single_browser");
    Ephoto_Viewer *v;
    Ephoto_History *eh;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
 
    if (!entry)
      sb->entry = NULL;
@@ -2401,7 +2430,8 @@ ephoto_single_browser_show_controls(Ephoto *ephoto)
 {
    Ephoto_Single_Browser *sb = evas_object_data_get(ephoto->single_browser,
                                                     "single_browser");
-   Evas_Object *but, *ic;
+   Evas_Object *but;
+   Evas_Object *ic;
    int ret;
 
    evas_object_del(ephoto->view_button);
