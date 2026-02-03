@@ -73,7 +73,7 @@ _image_shown(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
 }
 
 static const char *
-_slideshow_move_end_get(Ephoto_Slideshow *ss)
+_slideshow_move_end_get(const Ephoto_Slideshow *ss)
 {
    switch (ss->move)
      {
@@ -154,7 +154,7 @@ _slideshow_move_end_get(Ephoto_Slideshow *ss)
 }
 
 static const char *
-_slideshow_move_start_get(Ephoto_Slideshow *ss)
+_slideshow_move_start_get(const Ephoto_Slideshow *ss)
 {
    switch (ss->move)
      {
