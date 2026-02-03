@@ -634,7 +634,7 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
             ephoto->folders_toggle = EINA_FALSE;
             ret = elm_icon_standard_set(ephoto->folders_icon, "folder");
             if (!ret)
-            elm_object_text_set(ephoto->folders_button, _("Show Folders"));
+                elm_object_text_set(ephoto->folders_button, _("Show Folders"));
             elm_object_tooltip_text_set(ephoto->folders_button, _("Show Folders"));
         }
     else
@@ -642,7 +642,7 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
             ephoto->folders_toggle = EINA_TRUE;
             ret = elm_icon_standard_set(ephoto->folders_icon, "folder-open");
             if (!ret)
-            elm_object_text_set(ephoto->folders_button, _("Hide Folders"));
+                elm_object_text_set(ephoto->folders_button, _("Hide Folders"));
             elm_object_tooltip_text_set(ephoto->folders_button, _("Hide Folders"));
         }
     if (ephoto->config->firstrun)
