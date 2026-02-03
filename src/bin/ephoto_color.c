@@ -14,7 +14,8 @@ struct _Ephoto_Color
    int           blue;
    int           green;
    int           red;
-   Evas_Coord    w, h;
+   Evas_Coord    w;
+   Evas_Coord    h;
    unsigned int *original_im_data;
 };
 
