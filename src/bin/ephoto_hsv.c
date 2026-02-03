@@ -14,7 +14,8 @@ struct _Ephoto_HSV
    double        hue;
    double        saturation;
    double        value;
-   Evas_Coord    w, h;
+   Evas_Coord    w;
+   Evas_Coord    h;
    unsigned int *original_im_data;
 };
 
