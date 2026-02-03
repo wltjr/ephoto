@@ -86,7 +86,7 @@ _reye_clicked(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
                   b = ephoto_mul_color_alpha(b, a);
                   g = ephoto_mul_color_alpha(g, a);
                   r = ephoto_mul_color_alpha(r, a);
-                  r = (int)((g + b) / 2);
+                  r = (g + b) / 2;
                   b = ephoto_normalize_color(b);
                   g = ephoto_normalize_color(g);
                   r = ephoto_normalize_color(r);
