@@ -19,6 +19,56 @@ struct _Ephoto_BCG
    unsigned int *original_im_data;
 };
 
+typedef enum { 
+    BRIGHTNESS, CONTRAST, GAMMA
+} _Ephoto_BCG_ADJUST;
+
+unsigned int
+_ephoto_bcg_adjust_img(unsigned int *p1, float *bcg, _Ephoto_BCG_ADJUST adjust)
+{
+    int a;
+    int r;
+    int g;
+    int b;
+    int bb;
+    int gg;
+    int rr;
+
+    b = (int)((*p1) & 0xff);
+    g = (int)((*p1 >> 8) & 0xff);
+    r = (int)((*p1 >> 16) & 0xff);
+    a = (int)((*p1 >> 24) & 0xff);
+    b = ephoto_mul_color_alpha(b, a);
+    g = ephoto_mul_color_alpha(g, a);
+    r = ephoto_mul_color_alpha(r, a);
+    if (BRIGHTNESS == adjust)
+    {
+        bb = b + (int)*bcg;
+        gg = g + (int)*bcg;
+        rr = r + (int)*bcg;
+    }
+    else if (CONTRAST == adjust)
+    {
+        bb = (int)((*bcg * (b - 128)) + 128);
+        gg = (int)((*bcg * (g - 128)) + 128);
+        rr = (int)((*bcg * (r - 128)) + 128);
+    }
+    else if (GAMMA == adjust)
+    {
+        bb = (int)(pow(((double)b / 255), *bcg) * 255);
+        gg = (int)(pow(((double)g / 255), *bcg) * 255);
+        rr = (int)(pow(((double)r / 255), *bcg) * 255);
+    }
+    bb = ephoto_normalize_color(bb);
+    gg = ephoto_normalize_color(gg);
+    rr = ephoto_normalize_color(rr);
+    bb = ephoto_demul_color_alpha(bb, a);
+    gg = ephoto_demul_color_alpha(gg, a);
+    rr = ephoto_demul_color_alpha(rr, a);
+
+    return (a << 24) | (rr << 16) | (gg << 8) | bb;
+}
+
 unsigned int *
 _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
                               unsigned int *image_data)
@@ -44,35 +94,12 @@ _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
         for (Evas_Coord x = 0; x < ebcg->w; x++)
-          {
-            int a;
-            int r;
-            int g;
-            int b;
-            int bb;
-            int gg;
-            int rr;
-
-             b = (int)((*p1) & 0xff);
-             g = (int)((*p1 >> 8) & 0xff);
-             r = (int)((*p1 >> 16) & 0xff);
-             a = (int)((*p1 >> 24) & 0xff);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
-             bb = b + ebcg->brightness;
-             gg = g + ebcg->brightness;
-             rr = r + ebcg->brightness;
-             bb = ephoto_normalize_color(bb);
-             gg = ephoto_normalize_color(gg);
-             rr = ephoto_normalize_color(rr);
-             bb = ephoto_demul_color_alpha(bb, a);
-             gg = ephoto_demul_color_alpha(gg, a);
-             rr = ephoto_demul_color_alpha(rr, a);
-             *p2 = (a << 24) | (rr << 16) | (gg << 8) | bb;
-             p2++;
-             p1++;
-          }
+        {
+            _Ephoto_BCG_ADJUST adjust = BRIGHTNESS;
+            *p2 = _ephoto_bcg_adjust_img(p1, (float *)&ebcg->brightness, adjust);
+            p2++;
+            p1++;
+        }
      }
    ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
                                            im_data_new, ebcg->w, ebcg->h);
@@ -111,35 +138,12 @@ _ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
         for (Evas_Coord x = 0; x < ebcg->w; x++)
-          {
-            int a;
-            int r;
-            int g;
-            int b;
-            int bb;
-            int gg;
-            int rr;
-
-             b = (int)((*p1) & 0xff);
-             g = (int)((*p1 >> 8) & 0xff);
-             r = (int)((*p1 >> 16) & 0xff);
-             a = (int)((*p1 >> 24) & 0xff);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
-             bb = (int)((factor * (b - 128)) + 128);
-             gg = (int)((factor * (g - 128)) + 128);
-             rr = (int)((factor * (r - 128)) + 128);
-             bb = ephoto_normalize_color(bb);
-             gg = ephoto_normalize_color(gg);
-             rr = ephoto_normalize_color(rr);
-             bb = ephoto_demul_color_alpha(bb, a);
-             gg = ephoto_demul_color_alpha(gg, a);
-             rr = ephoto_demul_color_alpha(rr, a);
-             *p2 = (a << 24) | (rr << 16) | (gg << 8) | bb;
-             p2++;
-             p1++;
-          }
+        {
+            _Ephoto_BCG_ADJUST adjust = CONTRAST;
+            *p2 = _ephoto_bcg_adjust_img(p1, &factor, adjust);
+            p2++;
+            p1++;
+        }
      }
    ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
                                            im_data_new, ebcg->w, ebcg->h);
@@ -172,35 +176,12 @@ _ephoto_bcg_adjust_gamma(Ephoto_BCG *ebcg, double gamma,
         p1 = im_data + (y * ebcg->w);
         p2 = im_data_new + (y * ebcg->w);
         for (Evas_Coord x = 0; x < ebcg->w; x++)
-          {
-            int a;
-            int r;
-            int g;
-            int b;
-            int bb;
-            int gg;
-            int rr;
-
-             b = (int)((*p1) & 0xff);
-             g = (int)((*p1 >> 8) & 0xff);
-             r = (int)((*p1 >> 16) & 0xff);
-             a = (int)((*p1 >> 24) & 0xff);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
-             bb = (int)(pow(((double)b / 255), ebcg->gamma) * 255);
-             gg = (int)(pow(((double)g / 255), ebcg->gamma) * 255);
-             rr = (int)(pow(((double)r / 255), ebcg->gamma) * 255);
-             bb = ephoto_normalize_color(bb);
-             gg = ephoto_normalize_color(gg);
-             rr = ephoto_normalize_color(rr);
-             bb = ephoto_demul_color_alpha(bb, a);
-             gg = ephoto_demul_color_alpha(gg, a);
-             rr = ephoto_demul_color_alpha(rr, a);
-             *p2 = (a << 24) | (rr << 16) | (gg << 8) | bb;
-             p2++;
-             p1++;
-          }
+        {
+            _Ephoto_BCG_ADJUST adjust = GAMMA;
+            *p2 = _ephoto_bcg_adjust_img(p1, (float *)&ebcg->gamma, adjust);
+            p2++;
+            p1++;
+        }
      }
    ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
                                            im_data_new, ebcg->w, ebcg->h);
