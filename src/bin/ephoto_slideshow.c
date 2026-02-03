@@ -237,7 +237,8 @@ _slideshow_move_start_get(Ephoto_Slideshow *ss)
 static void
 _slideshow_move_randomize(Ephoto_Slideshow *ss)
 {
-   int i, r = 0;
+   int i;
+   int r = 0;
    int range = 24;
    int buckets = RAND_MAX / range;
    int limit = buckets * range;
@@ -395,8 +396,12 @@ _slideshow_item_get(Ephoto_Slideshow *ss, Ephoto_Entry *entry, Evas_Object *pare
 {
    const char *group = NULL;
    const char *ext = strrchr(entry->path, '.');
-   Evas_Coord w, h, sw, sh;
-   Evas_Object *layout, *image;
+   Evas_Coord w;
+   Evas_Coord h;
+   Evas_Coord sw;
+   Evas_Coord sh;
+   Evas_Object *layout;
+   Evas_Object *image;
    Edje_Message_Float_Set *msg;
 
    if (ext)
@@ -828,7 +833,8 @@ _key_down(void *data, Evas *e EINA_UNUSED, Evas_Object *obj EINA_UNUSED,
 static Evas_Object *
 _add_icon(Evas_Object *parent, const char *icon, const char *label, Evas_Object *before)
 {
-   Evas_Object *ic, *but;
+   Evas_Object *ic;
+   Evas_Object *but;
    int ret;
 
    ic = elm_icon_add(parent);
