@@ -59,6 +59,12 @@ _ephoto_bcg_adjust_img(unsigned int *p1, float *bcg, _Ephoto_BCG_ADJUST adjust)
         gg = (int)(pow(((double)g / 255), *bcg) * 255);
         rr = (int)(pow(((double)r / 255), *bcg) * 255);
     }
+    else
+    {
+        bb = b;
+        gg = g;
+        rr = r;
+    }
     bb = ephoto_normalize_color(bb);
     gg = ephoto_normalize_color(gg);
     rr = ephoto_normalize_color(rr);
