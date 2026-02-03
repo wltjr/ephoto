@@ -1298,7 +1298,7 @@ _prompt_save_image_as_apply(void *data, Evas_Object *obj, void *event_info)
           }
         else
           {
-             ext = eina_stringshare_add((strrchr(selected, '.') + 1));
+             ext = eina_stringshare_add(strrchr(selected, '.') + 1);
              if (ext)
                {
                   if (!_ephoto_file_image_can_save(ext))
