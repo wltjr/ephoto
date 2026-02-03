@@ -97,8 +97,8 @@ _ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
             sizeof(unsigned int) * ebcg->w * ebcg->h);
 
    ebcg->contrast = contrast;
-   top = ((255 + (contrast)) * 259);
-   bottom = ((259 - (contrast)) * 255);
+   top = ((255 + contrast) * 259);
+   bottom = ((259 - contrast) * 255);
    factor = (float)top / (float)bottom;
    im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
 
