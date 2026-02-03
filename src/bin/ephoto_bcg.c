@@ -14,7 +14,8 @@ struct _Ephoto_BCG
    int           contrast;
    int           brightness;
    double        gamma;
-   Evas_Coord    w, h;
+   Evas_Coord    w;
+   Evas_Coord    h;
    unsigned int *original_im_data;
 };
 
