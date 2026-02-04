@@ -111,7 +111,8 @@ static void
 _ephoto_update_bottom_bar(Ephoto_Single_Browser *sb)
 {
    Ephoto_Viewer *v = evas_object_data_get(sb->viewer, "viewer");
-   char image_info[PATH_MAX], *tmp;
+   char image_info[PATH_MAX];
+   char *tmp;
    Evas_Coord w;
    Evas_Coord h;
 
@@ -324,7 +325,8 @@ _monitor_cb(void *data, int type,
         if (ecore_file_exists(sb->entry->path))
           {
              Evas_Object *tmp;
-             Evas_Coord w, h;
+             Evas_Coord w;
+             Evas_Coord h;
              const char *group = _ephoto_get_edje_group(sb->entry->path);
 
              tmp = evas_object_image_add(evas_object_evas_get(v->table));
