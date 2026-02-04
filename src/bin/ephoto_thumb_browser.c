@@ -288,7 +288,7 @@ _dnd_drag_done(void *data, Evas_Object *obj,
 static const char *
 _dnd_drag_data_build(Eina_List **items)
 {
-   const char *drag_data = NULL;
+   char *drag_data = NULL;
 
    if (*items)
      {
@@ -306,16 +306,16 @@ _dnd_drag_data_build(Eina_List **items)
 
         drag_data =
           malloc(len + eina_list_count(*items) * (FILESEP_LEN + 1) + 1);
-        strcpy((char *)drag_data, "");
+        strcpy(drag_data, "");
 
         EINA_LIST_FOREACH(*items, l, it)
           {
              e = elm_object_item_data_get(it);
              if (e->path)
                {
-                  strcat((char *)drag_data, FILESEP);
-                  strcat((char *)drag_data, e->path);
-                  strcat((char *)drag_data, "\n");
+                  strcat(drag_data, FILESEP);
+                  strcat(drag_data, e->path);
+                  strcat(drag_data, "\n");
                }
           }
      }
