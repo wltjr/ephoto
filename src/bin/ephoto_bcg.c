@@ -24,7 +24,8 @@ typedef enum {
 } _Ephoto_BCG_ADJUST;
 
 unsigned int
-_ephoto_bcg_adjust_img(unsigned int *p1, float *bcg, _Ephoto_BCG_ADJUST adjust)
+_ephoto_bcg_adjust_img(const unsigned int *p1, const float *bcg,
+                       _Ephoto_BCG_ADJUST adjust)
 {
     int a;
     int r;
