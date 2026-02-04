@@ -331,7 +331,10 @@ _dnd_create_icon(void *data, Evas_Object *win, Evas_Coord *xoff,
 
    if (o)
      {
-        int xm, ym, w = 30, h = 30;
+        int xm;
+        int ym;
+        int w = 30;
+        int h = 30;
         const char *f;
         const char *g;
 
@@ -443,7 +446,8 @@ _thumb_item_del(void *data EINA_UNUSED, Evas_Object *obj EINA_UNUSED)
 static int
 _entry_cmp_grid_alpha_asc(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
 
    a = elm_object_item_data_get(pa);
    b = elm_object_item_data_get(pb);
@@ -454,7 +458,8 @@ _entry_cmp_grid_alpha_asc(const void *pa, const void *pb)
 static int
 _entry_cmp_grid_alpha_desc(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
    int i;
 
    a = elm_object_item_data_get(pa);
@@ -471,8 +476,10 @@ _entry_cmp_grid_alpha_desc(const void *pa, const void *pb)
 static int
 _entry_cmp_grid_mod_asc(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
-   long long moda, modb;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
+   long long moda;
+   long long modb;
 
    a = elm_object_item_data_get(pa);
    b = elm_object_item_data_get(pb);
@@ -491,8 +498,10 @@ _entry_cmp_grid_mod_asc(const void *pa, const void *pb)
 static int
 _entry_cmp_grid_mod_desc(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
-   long long moda, modb;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
+   long long moda;
+   long long modb;
 
    a = elm_object_item_data_get(pa);
    b = elm_object_item_data_get(pb);
@@ -520,7 +529,8 @@ _entry_cmp_grid_mod_desc(const void *pa, const void *pb)
 static int
 _entry_cmp_grid_similarity(const void *pa, const void *pb)
 {
-   const Ephoto_Entry *a, *b;
+   const Ephoto_Entry *a;
+   const Ephoto_Entry *b;
 
    a = elm_object_item_data_get(pa);
    b = elm_object_item_data_get(pb);
@@ -658,7 +668,8 @@ _view_single(void *data, Evas_Object *obj EINA_UNUSED,
    Ephoto_Thumb_Browser *tb = data;
    Elm_Object_Item *it = elm_gengrid_selected_item_get(tb->grid);
    Ephoto_Entry *entry;
-   Eina_List *selected, *s;
+   Eina_List *selected;
+   Eina_List *s;
    Elm_Object_Item *item;
 
    if (it)
@@ -835,7 +846,8 @@ _grid_menu_delete_cb(void *data, Evas_Object *obj EINA_UNUSED,
                      void *event_info EINA_UNUSED)
 {
    Ephoto_Thumb_Browser *tb = data;
-   Eina_List *paths = NULL, *f;
+   Eina_List *paths = NULL;
+   Eina_List *f;
    Eina_List *selection =
      eina_list_clone(elm_gengrid_selected_items_get(tb->grid));
    Elm_Object_Item *item;
@@ -867,7 +879,8 @@ _grid_mouse_up_cb(void *data, Evas *e EINA_UNUSED,
    Eina_Bool shift = evas_key_modifier_is_set(info->modifiers, "Shift");
    Eina_Bool clear_selection = EINA_FALSE;
    const Eina_List *selected = elm_gengrid_selected_items_get(tb->grid);
-   int x, y;
+   int x;
+   int y;
 
    evas_pointer_canvas_xy_get(evas_object_evas_get(tb->grid), &x, &y);
    item = elm_gengrid_at_xy_item_get(tb->grid, x, y, 0, 0);
@@ -882,8 +895,11 @@ _grid_mouse_up_cb(void *data, Evas *e EINA_UNUSED,
           {
              if (tb->last_sel)
                {
-                  int one, two, i;
-                  Elm_Object_Item *it, *cur = tb->last_sel;
+                  int one;
+                  int two;
+                  int i;
+                  Elm_Object_Item *it;
+                  Elm_Object_Item *cur = tb->last_sel;
                   one = elm_gengrid_item_index_get(tb->last_sel);
                   two = elm_gengrid_item_index_get(item);
                   if (two < one)
@@ -1219,7 +1235,8 @@ _ephoto_thumb_search_go(void *data, Evas_Object *obj EINA_UNUSED,
         EINA_LIST_FOREACH(results, l, o)
           {
              const Elm_Gengrid_Item_Class *ic = NULL;
-             Ephoto_Entry *entry = NULL, *e = NULL;
+             Ephoto_Entry *entry = NULL;
+             Ephoto_Entry *e = NULL;
 
              if (tb->ephoto->config->thumbnail_aspect)
                _ephoto_thumb_file_class.item_style = "default";
@@ -1336,7 +1353,8 @@ _ephoto_thumb_search_start(void *data, Evas_Object *obj EINA_UNUSED,
                            void *event_info EINA_UNUSED)
 {
    Ephoto_Thumb_Browser *tb = data;
-   Evas_Object *hbox, *search;
+   Evas_Object *hbox;
+   Evas_Object *search;
 
    if (tb->processing)
      return;
@@ -2054,7 +2072,9 @@ ephoto_thumb_browser_show_controls(Ephoto *ephoto)
 {
    Ephoto_Thumb_Browser *tb = evas_object_data_get(ephoto->thumb_browser,
                                                    "thumb_browser");
-   Evas_Object *but, *ic, *hover;
+   Evas_Object *but;
+   Evas_Object *ic;
+   Evas_Object *hover;
    int ret;
 
    evas_object_del(ephoto->view_button);
