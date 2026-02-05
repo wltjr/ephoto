@@ -1290,15 +1290,15 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, const char *rp)
           cur = tentry->item;
 	EINA_ITERATOR_FOREACH(it, finfo)
           {
-             char *rp = ecore_file_realpath(finfo->path);
+             char *rp1 = ecore_file_realpath(finfo->path);
              if (finfo->type != EINA_FILE_DIR && finfo->type != EINA_FILE_LNK)
                {
-                  free(rp);
+                  free(rp1);
                   continue;
                }
-             if (finfo->type == EINA_FILE_LNK && !ecore_file_is_dir(rp))
+             if (finfo->type == EINA_FILE_LNK && !ecore_file_is_dir(rp1))
                {
-                  free(rp);
+                  free(rp1);
                   continue;
                }
              if (strncmp(finfo->path + finfo->name_start, ".", 1))
@@ -1349,7 +1349,7 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, const char *rp)
                          }
                     }
                }
-             free(rp);
+             free(rp1);
           }
         count++;
         free(dir);
