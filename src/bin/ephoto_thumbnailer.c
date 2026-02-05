@@ -18,7 +18,8 @@ typedef struct _E_Thumb E_Thumb;
 struct _E_Thumb
 {
    int   objid;
-   int   w, h;
+   int   w;
+   int   h;
    char *file;
    char *key;
 };
@@ -258,7 +259,9 @@ struct _Color
    Color        *closest;
    int           closest_dist;
    int           use;
-   unsigned char r, g, b;
+   unsigned char r;
+   unsigned char g;
+   unsigned char b;
 };
 
 static void
@@ -273,9 +276,14 @@ _e_thumb_generate(E_Thumb *eth)
    Ecore_Evas *ee = NULL, *ee_im = NULL;
    Evas_Object *im = NULL, *edje = NULL;
    Eet_File *ef = NULL;
-   int iw, ih, alpha, ww, hh;
+   int iw;
+   int ih;
+   int alpha;
+   int ww;
+   int hh;
    const unsigned int *data = NULL;
-   time_t mtime_orig, mtime_thumb;
+   time_t mtime_orig;
+   time_t mtime_thumb;
 
    id = _e_thumb_file_id(eth->file, eth->key);
    if (!id) return;
@@ -367,7 +375,10 @@ _e_thumb_generate(E_Thumb *eth)
                   !strcasecmp(ext, ".spd")
                  ))
           {
-             Evas_Coord tx = 0, ty = 0, tw = 0, th = 0;
+             Evas_Coord tx = 0;
+             Evas_Coord ty = 0;
+             Evas_Coord tw = 0;
+             Evas_Coord th = 0;
              ww = eth->w;
              hh = eth->h;
              alpha = 0;
@@ -478,9 +489,14 @@ _e_thumb_generate(E_Thumb *eth)
                     {
                        unsigned int *data3;
                        unsigned char id2[(21 * 4) + 1];
-                       int n, i;
-                       int hi, si, vi;
-                       float h, s, v;
+                       int n;
+                       int i;
+                       int hi;
+                       int si;
+                       int vi;
+                       float h;
+                       float s;
+                       float v;
                        const int pat2[4] =
                        {
                           0, 3, 1, 2
@@ -595,10 +611,19 @@ end:
 static int
 e_sha1_sum(unsigned char *data, int size, unsigned char *dst)
 {
-   unsigned int digest[5], word[80], wa, wb, wc, wd, we, t;
+   unsigned int digest[5];
+   unsigned int word[80];
+   unsigned int wa;
+   unsigned int wb;
+   unsigned int wc;
+   unsigned int wd;
+   unsigned int we;
+   unsigned int t;
    unsigned char buf[64];
    const unsigned char *d;
-   int idx, left, i;
+   int idx;
+   int left;
+   int i;
    const unsigned int magic[4] =
    {
       0x5a827999,
@@ -691,8 +716,11 @@ _e_thumb_file_id(const char *file,
 {
    char s[64];
    const char *chmap = "0123456789abcdef";
-   unsigned char *buf, id[20];
-   int i, len, lenf;
+   unsigned char *buf;
+   unsigned char id[20];
+   int i;
+   int len;
+   int lenf;
 
    len = 0;
    lenf = strlen(file);
