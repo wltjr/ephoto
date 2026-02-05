@@ -12,7 +12,7 @@ int EPHOTO_EVENT_EDITOR_BACK = 0;
 typedef struct _Ephoto_Entry_Free_Listener Ephoto_Entry_Free_Listener;
 struct _Ephoto_Entry_Free_Listener
 {
-   void        (*cb)(void *data, const Ephoto_Entry *dead);
+   void        (*cb)(const void *data, const Ephoto_Entry *dead);
    const void *data;
 };
 
@@ -1201,7 +1201,7 @@ ephoto_entry_free(Ephoto *ephoto, Ephoto_Entry *entry)
 
    EINA_LIST_FREE(entry->free_listeners, fl)
      {
-        fl->cb((void *)fl->data, entry);
+        fl->cb(fl->data, entry);
         free(fl);
      }
    if (!entry->is_dir)
@@ -1236,7 +1236,7 @@ ephoto_entry_free_listener_add(Ephoto_Entry *entry, void (*cb)(void *data,
    Ephoto_Entry_Free_Listener *fl;
 
    fl = malloc(sizeof(Ephoto_Entry_Free_Listener));
-   fl->cb = cb;
+   fl->cb = (const void *)cb;
    fl->data = data;
    entry->free_listeners = eina_list_append(entry->free_listeners, fl);
 }
@@ -1251,7 +1251,7 @@ ephoto_entry_free_listener_del(Ephoto_Entry *entry, void (*cb)(void *data,
 
    EINA_LIST_FOREACH(entry->free_listeners, l, fl)
      {
-        if ((fl->cb == cb) && (fl->data == data))
+        if ((fl->cb == (const void *)cb) && (fl->data == data))
           {
              if (eina_list_data_find(entry->free_listeners, l))
                {
