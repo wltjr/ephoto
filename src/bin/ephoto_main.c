@@ -622,7 +622,7 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
    ephoto->trash_path = eina_stringshare_add(trash);
 
     ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
-    ephoto_directory_browser_initialize_structure(ephoto, (char *)ephoto->config->open);
+    ephoto_directory_browser_initialize_structure(ephoto, ephoto->config->open);
     evas_object_resize(ephoto->win, ephoto->config->window_width,
                         ephoto->config->window_height);
    evas_object_show(ephoto->win);
