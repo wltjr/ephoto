@@ -856,11 +856,11 @@ _posterize(void *data, Ecore_Thread *th EINA_UNUSED)
              fr /= 255;
              fg /= 255;
              fb /= 255;
-             rr = 255 * rint((fr * rad)) / rad;
+             rr = 255 * rint(fr * rad) / rad;
              rr = ephoto_normalize_color(rr);
-             gg = 255 * rint((fg * rad)) / rad;
+             gg = 255 * rint(fg * rad) / rad;
              gg = ephoto_normalize_color(gg);
-             bb = 255 * rint((fb * rad)) / rad;
+             bb = 255 * rint(fb * rad) / rad;
              bb = ephoto_normalize_color(bb);
              bb = ephoto_demul_color_alpha(bb, a);
              gg = ephoto_demul_color_alpha(gg, a);
