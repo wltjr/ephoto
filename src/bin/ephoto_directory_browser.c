@@ -1231,7 +1231,7 @@ ephoto_directory_browser_top_dir_set(Ephoto *ephoto, const char *dir)
 }
 
 void
-ephoto_directory_browser_initialize_structure(Ephoto *ephoto, char *rp)
+ephoto_directory_browser_initialize_structure(Ephoto *ephoto, const char *rp)
 {
    Ephoto_Directory_Browser *db =
      evas_object_data_get(ephoto->dir_browser, "directory_browser");
@@ -1296,7 +1296,7 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, char *rp)
                   free(rp);
                   continue;
                }
-             if (finfo->type == EINA_FILE_LNK && !ecore_file_is_dir((const char *)rp))
+             if (finfo->type == EINA_FILE_LNK && !ecore_file_is_dir(rp))
                {
                   free(rp);
                   continue;
