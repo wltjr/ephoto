@@ -70,10 +70,7 @@ main(int argc,
              const char *val;
 
              val = argv[i] + 7;
-             if (*val)
-               {
-                  if (nice(atoi(val)) < 0) perror("nice");
-               }
+             if (*val && nice(atoi(val)) < 0) perror("nice");
           }
      }
 
