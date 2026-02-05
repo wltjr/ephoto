@@ -11,7 +11,7 @@
 # include <winsock2.h>
 #endif
 
-#define SHSH(n, v) ((((v) << (n)) & 0xffffffff) | ((v) >> (32 - (n))))
+#define SHSH(n, v) (((v << n) & 0xffffffff) | (v >> (32 - n)))
 
 typedef struct _E_Thumb E_Thumb;
 
@@ -54,9 +54,9 @@ main(int argc,
 
    for (i = 1; i < argc; i++)
      {
-        if ((!strcmp(argv[i], "-h")) ||
-            (!strcmp(argv[i], "-help")) ||
-            (!strcmp(argv[i], "--help")))
+        if (!strcmp(argv[i], "-h") ||
+            !strcmp(argv[i], "-help") ||
+            !strcmp(argv[i], "--help"))
           {
              printf(
                "This is an internal tool for Ephoto.\n"
@@ -321,9 +321,9 @@ _e_thumb_generate(E_Thumb *eth)
 
         sortkey = EINA_FALSE;
 
-        if ((ext) && (eth->key) &&
-            ((!strcasecmp(ext, ".edj")) ||
-             (!strcasecmp(ext, ".eap"))))
+        if (ext && eth->key &&
+            (!strcasecmp(ext, ".edj") ||
+             !strcasecmp(ext, ".eap")))
           {
              ww = eth->w;
              hh = eth->h;
@@ -335,9 +335,9 @@ _e_thumb_generate(E_Thumb *eth)
              evas_object_image_size_set(im, ww * 4, hh * 4);
              evas_object_image_fill_set(im, 0, 0, ww, hh);
              edje = edje_object_add(evas_im);
-             if ((eth->key) &&
-                 ((!strcmp(eth->key, "e/desktop/background")) ||
-                  (!strcmp(eth->key, "e/init/splash"))))
+             if (eth->key &&
+                 (!strcmp(eth->key, "e/desktop/background") ||
+                  !strcmp(eth->key, "e/init/splash")))
                alpha = 0;
              if (edje_object_file_set(edje, eth->file, eth->key))
                {
@@ -349,22 +349,22 @@ _e_thumb_generate(E_Thumb *eth)
              evas_object_resize(im, ww, hh);
              sortkey = EINA_TRUE;
           }
-        else if ((ext) &&
-                 ((!strcasecmp(ext, ".ttf")) ||
-                  (!strcasecmp(ext, ".pcf")) ||
-                  (!strcasecmp(ext, ".bdf")) ||
-                  (!strcasecmp(ext, ".ttx")) ||
-                  (!strcasecmp(ext, ".pfa")) ||
-                  (!strcasecmp(ext, ".pfb")) ||
-                  (!strcasecmp(ext, ".afm")) ||
-                  (!strcasecmp(ext, ".sfd")) ||
-                  (!strcasecmp(ext, ".snf")) ||
-                  (!strcasecmp(ext, ".otf")) ||
-                  (!strcasecmp(ext, ".psf")) ||
-                  (!strcasecmp(ext, ".ttc")) ||
-                  (!strcasecmp(ext, ".ttx")) ||
-                  (!strcasecmp(ext, ".gsf")) ||
-                  (!strcasecmp(ext, ".spd"))
+        else if (ext &&
+                 (!strcasecmp(ext, ".ttf") ||
+                  !strcasecmp(ext, ".pcf") ||
+                  !strcasecmp(ext, ".bdf") ||
+                  !strcasecmp(ext, ".ttx") ||
+                  !strcasecmp(ext, ".pfa") ||
+                  !strcasecmp(ext, ".pfb") ||
+                  !strcasecmp(ext, ".afm") ||
+                  !strcasecmp(ext, ".sfd") ||
+                  !strcasecmp(ext, ".snf") ||
+                  !strcasecmp(ext, ".otf") ||
+                  !strcasecmp(ext, ".psf") ||
+                  !strcasecmp(ext, ".ttc") ||
+                  !strcasecmp(ext, ".ttx") ||
+                  !strcasecmp(ext, ".gsf") ||
+                  !strcasecmp(ext, ".spd")
                  ))
           {
              Evas_Coord tx = 0, ty = 0, tw = 0, th = 0;
@@ -498,10 +498,10 @@ _e_thumb_generate(E_Thumb *eth)
                        memcpy(data3, data, sizeof(unsigned int));
                        // sort_id
                        n = 0;
-#define A(v) (((v) >> 24) & 0xff)
-#define R(v) (((v) >> 16) & 0xff)
-#define G(v) (((v) >> 8) & 0xff)
-#define B(v) (((v)) & 0xff)
+#define A(v) ((v >> 24) & 0xff)
+#define R(v) ((v >> 16) & 0xff)
+#define G(v) ((v >> 8) & 0xff)
+#define B(v) ( v & 0xff)
 #define HSV(p)                                         \
   evas_color_rgb_to_hsv(R(p), G(p), B(p), &h, &s, &v); \
   hi = 20 * (h / 360.0);                               \
@@ -616,22 +616,22 @@ e_sha1_sum(unsigned char *data, int size, unsigned char *dst)
    memset(buf, 0, sizeof(buf));
    for (left = size, d = data; left > 0; left--, d++)
      {
-        if ((idx == 0) && (left < 64))
+        if (idx == 0 && left < 64)
           {
              memset(buf, 0, 60);
              buf[60] = (size >> 24) & 0xff;
              buf[61] = (size >> 16) & 0xff;
              buf[62] = (size >> 8) & 0xff;
-             buf[63] = (size) & 0xff;
+             buf[63] =  size & 0xff;
           }
         buf[idx] = *d;
         idx++;
-        if ((idx == 64) || (left == 1))
+        if (idx == 64 || left == 1)
           {
-             if ((left == 1) && (idx < 64)) buf[idx] = 0x80;
+             if (left == 1 && idx < 64) buf[idx] = 0x80;
              for (i = 0; i < 16; i++)
                {
-                  word[i] = (unsigned int)buf[(i * 4)    ] << 24;
+                  word[i] = (unsigned int)buf[i * 4       ] << 24;
                   word[i] |= (unsigned int)buf[(i * 4) + 1] << 16;
                   word[i] |= (unsigned int)buf[(i * 4) + 2] << 8;
                   word[i] |= (unsigned int)buf[(i * 4) + 3];
@@ -712,9 +712,9 @@ _e_thumb_file_id(char *file,
    for (i = 0; i < 20; i++)
      {
         s[(i * 2) + 0] = chmap[(id[i] >> 4) & 0xf];
-        s[(i * 2) + 1] = chmap[(id[i]) & 0xf];
+        s[(i * 2) + 1] = chmap[id[i] & 0xf];
      }
-   s[(i * 2)] = 0;
+   s[i * 2] = 0;
    return strdup(s);
 }
 
