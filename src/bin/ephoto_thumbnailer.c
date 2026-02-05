@@ -507,13 +507,13 @@ _e_thumb_generate(E_Thumb *eth)
   hi = 20 * (h / 360.0);                               \
   si = 20 * s;                                         \
   vi = 20 * v;                                         \
-  if (si < 2) hi = 25;
+  if (si < 2) hi = 25   // no semi-colon for clear usage with one
 #define SAVEHSV(h, s, v) \
   id2[n++] = 'a' + h;    \
   id2[n++] = 'a' + v;    \
-  id2[n++] = 'a' + s;
+  id2[n++] = 'a' + s   // no semi-colon for clear usage with one
 #define SAVEX(x) \
-  id2[n++] = 'a' + x;
+  id2[n++] = 'a' + x   // no semi-colon for clear usage with one
 #if 0
                        HSV(data3[0]);
                        SAVEHSV(hi, si, vi);
