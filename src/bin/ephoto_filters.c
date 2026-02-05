@@ -566,10 +566,10 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
           {
              int index = y * w + x;
 
-             b = (ef->im_data_new[index]) & 0xff;
-             g = ((ef->im_data_new[index] >> 8) & 0xff);
-             r = ((ef->im_data_new[index] >> 16) & 0xff);
-             a = ((ef->im_data_new[index] >> 24) & 0xff);
+             b = ef->im_data_new[index] & 0xff;
+             g = (ef->im_data_new[index] >> 8) & 0xff;
+             r = (ef->im_data_new[index] >> 16) & 0xff;
+             a = (ef->im_data_new[index] >> 24) & 0xff;
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
@@ -591,10 +591,10 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((x + 1) < w)
                {
                   index = y * w + x + 1;
-                  b = (ef->im_data_new[index] & 0xff);
-                  g = ((ef->im_data_new[index] >> 8) & 0xff);
-                  r = ((ef->im_data_new[index] >> 16) & 0xff);
-                  a = ((ef->im_data_new[index] >> 24) & 0xff);
+                  b = ef->im_data_new[index] & 0xff;
+                  g = (ef->im_data_new[index] >> 8) & 0xff;
+                  r = (ef->im_data_new[index] >> 16) & 0xff;
+                  a = (ef->im_data_new[index] >> 24) & 0xff;
                   b = ephoto_mul_color_alpha(b, a);
                   g = ephoto_mul_color_alpha(g, a);
                   r = ephoto_mul_color_alpha(r, a);
@@ -613,10 +613,10 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if (x > 0 && (y + 1) < h)
                {
                   index = (y + 1) * w + (x - 1);
-                  b = (ef->im_data_new[index] & 0xff);
-                  g = ((ef->im_data_new[index] >> 8) & 0xff);
-                  r = ((ef->im_data_new[index] >> 16) & 0xff);
-                  a = ((ef->im_data_new[index] >> 24) & 0xff);
+                  b = ef->im_data_new[index] & 0xff;
+                  g = (ef->im_data_new[index] >> 8) & 0xff;
+                  r = (ef->im_data_new[index] >> 16) & 0xff;
+                  a = (ef->im_data_new[index] >> 24) & 0xff;
                   b = ephoto_mul_color_alpha(b, a);
                   g = ephoto_mul_color_alpha(g, a);
                   r = ephoto_mul_color_alpha(r, a);
@@ -635,10 +635,10 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((y + 1) < h)
                {
                   index = (y + 1) * w + x;
-                  b = (ef->im_data_new[index] & 0xff);
-                  g = ((ef->im_data_new[index] >> 8) & 0xff);
-                  r = ((ef->im_data_new[index] >> 16) & 0xff);
-                  a = ((ef->im_data_new[index] >> 24) & 0xff);
+                  b = ef->im_data_new[index] & 0xff;
+                  g = (ef->im_data_new[index] >> 8) & 0xff;
+                  r = (ef->im_data_new[index] >> 16) & 0xff;
+                  a = (ef->im_data_new[index] >> 24) & 0xff;
                   b = ephoto_mul_color_alpha(b, a);
                   g = ephoto_mul_color_alpha(g, a);
                   r = ephoto_mul_color_alpha(r, a);
@@ -657,10 +657,10 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((y + 1) < h && (x + 1) < w)
                {
                   index = (y + 1) * w + (x + 1);
-                  b = (ef->im_data_new[index] & 0xff);
-                  g = ((ef->im_data_new[index] >> 8) & 0xff);
-                  r = ((ef->im_data_new[index] >> 16) & 0xff);
-                  a = ((ef->im_data_new[index] >> 24) & 0xff);
+                  b = ef->im_data_new[index] & 0xff;
+                  g = (ef->im_data_new[index] >> 8) & 0xff;
+                  r = (ef->im_data_new[index] >> 16) & 0xff;
+                  a = (ef->im_data_new[index] >> 24) & 0xff;
                   b = ephoto_mul_color_alpha(b, a);
                   g = ephoto_mul_color_alpha(g, a);
                   r = ephoto_mul_color_alpha(r, a);
@@ -724,10 +724,10 @@ _sepia(void *data, Ecore_Thread *th EINA_UNUSED)
           {
              i = y * w + x;
 
-             b = ((ef->im_data[i]) & 0xff);
-             g = ((ef->im_data[i] >> 8) & 0xff);
-             r = ((ef->im_data[i] >> 16) & 0xff);
-             a = ((ef->im_data[i] >> 24) & 0xff);
+             b = ef->im_data[i] & 0xff;
+             g = (ef->im_data[i] >> 8) & 0xff;
+             r = (ef->im_data[i] >> 16) & 0xff;
+             a = (ef->im_data[i] >> 24) & 0xff;
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
@@ -761,10 +761,10 @@ _posterize(void *data, Ecore_Thread *th EINA_UNUSED)
         for (x = 0; x < w; x++)
           {
              i = y * w + x;
-             fb = ((ef->im_data[i]) & 0xff);
-             fg = ((ef->im_data[i] >> 8) & 0xff);
-             fr = ((ef->im_data[i] >> 16) & 0xff);
-             a = ((ef->im_data[i] >> 24) & 0xff);
+             fb = ef->im_data[i] & 0xff;
+             fg = (ef->im_data[i] >> 8) & 0xff;
+             fr = (ef->im_data[i] >> 16) & 0xff;
+             a = (ef->im_data[i] >> 24) & 0xff;
              fb = ephoto_mul_color_alpha(fb, a);
              fg = ephoto_mul_color_alpha(fg, a);
              fr = ephoto_mul_color_alpha(fr, a);
@@ -799,10 +799,10 @@ _negative(void *data, Ecore_Thread *th EINA_UNUSED)
         for (x = 0; x < w; x++)
           {
              i = y * w + x;
-             b = ((ef->im_data[i]) & 0xff);
-             g = ((ef->im_data[i] >> 8) & 0xff);
-             r = ((ef->im_data[i] >> 16) & 0xff);
-             a = ((ef->im_data[i] >> 24) & 0xff);
+             b = ef->im_data[i] & 0xff;
+             g = (ef->im_data[i] >> 8) & 0xff;
+             r = (ef->im_data[i] >> 16) & 0xff;
+             a = (ef->im_data[i] >> 24) & 0xff;
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
@@ -837,15 +837,15 @@ _dodge(void *data, Ecore_Thread *th EINA_UNUSED)
         for (x = 0; x < w; x++)
           {
              i = y * w + x;
-             b = ((ef->im_data_two[i]) & 0xff);
-             g = ((ef->im_data_two[i] >> 8) & 0xff);
-             r = ((ef->im_data_two[i] >> 16) & 0xff);
-             a = ((ef->im_data_two[i] >> 24) & 0xff);
+             b = ef->im_data_two[i] & 0xff;
+             g = (ef->im_data_two[i] >> 8) & 0xff;
+             r = (ef->im_data_two[i] >> 16) & 0xff;
+             a = (ef->im_data_two[i] >> 24) & 0xff;
 
-             bb = ((ef->im_data[i]) & 0xff);
-             gg = ((ef->im_data[i] >> 8) & 0xff);
-             rr = ((ef->im_data[i] >> 16) & 0xff);
-             aa = ((ef->im_data[i] >> 24) & 0xff);
+             bb = (ef->im_data[i]) & 0xff;
+             gg = (ef->im_data[i] >> 8) & 0xff;
+             rr = (ef->im_data[i] >> 16) & 0xff;
+             aa = (ef->im_data[i] >> 24) & 0xff;
 
              b *= 255;
              g *= 255;
@@ -907,10 +907,10 @@ _sobel(void *data, Ecore_Thread *th EINA_UNUSED)
                }
              pval = abs(hpval) + abs(vpval);
              *p = pval;
-             b = ((*p) & 0xff);
-             g = ((*p >> 8) & 0xff);
-             r = ((*p >> 16) & 0xff);
-             a = ((*p >> 24) & 0xff);
+             b = *p & 0xff;
+             g = (*p >> 8) & 0xff;
+             r = (*p >> 16) & 0xff;
+             a = (*p >> 24) & 0xff;
              b = ephoto_normalize_color(b);
              g = ephoto_normalize_color(g);
              r = ephoto_normalize_color(r);
@@ -949,7 +949,7 @@ _emboss(void *data, Ecore_Thread *th EINA_UNUSED)
                             int index, pix;
                             index = (y + i) * w + x + j;
                             pix = ef->im_data[index];
-                            bb += ((pix) & 0xff) *
+                            bb += (pix & 0xff) *
                               emboss[i + 1][j + 1];
                             gg += ((pix >> 8) & 0xff) *
                               emboss[i + 1][j + 1];
@@ -989,10 +989,10 @@ _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
         p1 = ef->im_data + (y * w);
         for (x = 0; x < w; x++)
           {
-             b = ((*p1) & 0xff);
-             g = ((*p1 >> 8) & 0xff);
-             r = ((*p1 >> 16) & 0xff);
-             a = ((*p1 >> 24) & 0xff);
+             b = *p1 & 0xff;
+             g = (*p1 >> 8) & 0xff;
+             r = (*p1 >> 16) & 0xff;
+             a = (*p1 >> 24) & 0xff;
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
@@ -1015,10 +1015,10 @@ _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
         p2 = ef->im_data_new + (y * w);
         for (x = 0; x < w; x++)
           {
-             b = ((*p1) & 0xff);
-             g = ((*p1 >> 8) & 0xff);
-             r = ((*p1 >> 16) & 0xff);
-             a = ((*p1 >> 24) & 0xff);
+             b = *p1 & 0xff;
+             g = (*p1 >> 8) & 0xff;
+             r = (*p1 >> 16) & 0xff;
+             a = (*p1 >> 24) & 0xff;
              b = ephoto_mul_color_alpha(b, a);
              g = ephoto_mul_color_alpha(g, a);
              r = ephoto_mul_color_alpha(r, a);
