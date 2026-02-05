@@ -36,8 +36,8 @@ static Eina_Bool _e_ipc_cb_server_data(void *data,
                                        void *event);
 static Eina_Bool _e_cb_timer(void *data);
 static void      _e_thumb_generate(E_Thumb *eth);
-static char     *_e_thumb_file_id(char *file,
-                                  char *key);
+static char     *_e_thumb_file_id(const char *file,
+                                  const char *key);
 
 /* local subsystem globals */
 static Ecore_Ipc_Server *_e_ipc_server = NULL;
@@ -596,7 +596,8 @@ static int
 e_sha1_sum(unsigned char *data, int size, unsigned char *dst)
 {
    unsigned int digest[5], word[80], wa, wb, wc, wd, we, t;
-   unsigned char buf[64], *d;
+   unsigned char buf[64];
+   const unsigned char *d;
    int idx, left, i;
    const unsigned int magic[4] =
    {
@@ -685,8 +686,8 @@ e_sha1_sum(unsigned char *data, int size, unsigned char *dst)
 }
 
 static char *
-_e_thumb_file_id(char *file,
-                 char *key)
+_e_thumb_file_id(const char *file,
+                 const char *key)
 {
    char s[64];
    const char *chmap = "0123456789abcdef";
