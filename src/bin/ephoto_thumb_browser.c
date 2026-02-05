@@ -1278,7 +1278,7 @@ _ephoto_thumb_search_go(void *data, Evas_Object *obj EINA_UNUSED,
                   elm_object_item_data_set(e->item, e);
                   tb->totimages++;
                   f = eina_file_open(e->path, EINA_FALSE);
-                  tb->totsize += (double)eina_file_size_get(f);
+                  tb->totsize += eina_file_size_get(f);
                   eina_file_close(f);
                   tb->searchentries = eina_list_append(tb->searchentries, e);
                }
@@ -1627,7 +1627,7 @@ _ephoto_thumb_entry_create(void *data, int type EINA_UNUSED, void *event)
         tb->totimages += 1;
         f = eina_file_open(e->path, EINA_FALSE);
         e->size = eina_file_size_get(f);
-        tb->totsize += (double)e->size;
+        tb->totsize += e->size;
         eina_file_close(f);
         tb->todo_items = eina_list_append(tb->todo_items, e);
         tb->animator.count++;
@@ -1984,7 +1984,7 @@ ephoto_thumb_browser_insert(Ephoto *ephoto, Ephoto_Entry *entry)
         tb->totimages += 1;
         f = eina_file_open(entry->path, EINA_FALSE);
         entry->size = eina_file_size_get(f);
-        tb->totsize += (double)entry->size;
+        tb->totsize += entry->size;
         eina_file_close(f);
 
         entry->gengrid = tb->grid;
@@ -2058,7 +2058,7 @@ ephoto_thumb_browser_update(Ephoto *ephoto, Ephoto_Entry *entry)
 
         f = eina_file_open(entry->path, EINA_FALSE);
         entry->size = eina_file_size_get(f);
-        tb->totsize += (double)entry->size;
+        tb->totsize += entry->size;
         eina_file_close(f);
 
         elm_gengrid_item_update(entry->item);
