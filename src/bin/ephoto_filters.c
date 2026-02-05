@@ -530,10 +530,10 @@ _sharpen(void *data, Ecore_Thread *th EINA_UNUSED)
              rr = (int)((*p2 >> 16) & 0xff);
              aa = (int)((*p2 >> 24) & 0xff);
 
-             bbb = (int)((2 * bb) - b);
-             ggg = (int)((2 * gg) - g);
-             rrr = (int)((2 * rr) - r);
-             aaa = (int)((2 * aa) - a);
+             bbb = (2 * bb) - b;
+             ggg = (2 * gg) - g;
+             rrr = (2 * rr) - r;
+             aaa = (2 * aa) - a;
 
              bbb = ephoto_normalize_color(bbb);
              ggg = ephoto_normalize_color(ggg);
@@ -949,13 +949,13 @@ _emboss(void *data, Ecore_Thread *th EINA_UNUSED)
                             int index, pix;
                             index = (y + i) * w + x + j;
                             pix = ef->im_data[index];
-                            bb += (int)((pix) & 0xff) *
+                            bb += ((pix) & 0xff) *
                               emboss[i + 1][j + 1];
-                            gg += (int)((pix >> 8) & 0xff) *
+                            gg += ((pix >> 8) & 0xff) *
                               emboss[i + 1][j + 1];
-                            rr += (int)((pix >> 16) & 0xff) *
+                            rr += ((pix >> 16) & 0xff) *
                               emboss[i + 1][j + 1];
-                            aa += (int)((pix >> 24) & 0xff) *
+                            aa += ((pix >> 24) & 0xff) *
                               emboss[i + 1][j + 1];
                          }
                     }
