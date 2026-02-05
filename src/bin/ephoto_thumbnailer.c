@@ -606,7 +606,7 @@ end:
 }
 
 static int
-e_sha1_sum(unsigned char *data, int size, unsigned char *dst)
+e_sha1_sum(const unsigned char *data, int size, unsigned char *dst)
 {
    unsigned int digest[5];
    unsigned int word[80];
