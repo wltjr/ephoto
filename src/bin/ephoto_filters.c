@@ -59,7 +59,8 @@ _initialize_filter(Ephoto_Image_Filter filter,
                    Ephoto *ephoto, Evas_Object *image)
 {
    Ephoto_Filter *ef = calloc(1, sizeof(Ephoto_Filter));
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    unsigned int *im_data;
 
    im_data =
@@ -98,7 +99,10 @@ _create_hist(Ephoto_Filter *ef)
 static Evas_Object *
 _processing(Evas_Object *main)
 {
-   Evas_Object *popup, *box, *label, *pb;
+   Evas_Object *popup;
+   Evas_Object *box;
+   Evas_Object *label;
+   Evas_Object *pb;
 
    popup = elm_popup_add(main);
    elm_object_part_text_set(popup, "title,text", _("Applying Filter"));
@@ -209,9 +213,16 @@ _thread_finished_cb(void *data, Ecore_Thread *th EINA_UNUSED)
 static void
 _blur_vertical(Ephoto_Filter *ef, double rad)
 {
-   Evas_Coord w, h;
-   int at, rt, gt, bt;
-   unsigned int *as, *rs, *gs, *bs;
+   Evas_Coord w;
+   Evas_Coord h;
+   int at;
+   int rt;
+   int gt;
+   int bt;
+   unsigned int *as;
+   unsigned int *rs;
+   unsigned int *gs;
+   unsigned int *bs;
    double iarr;
 
    w = ef->w;
@@ -233,10 +244,21 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
    iarr = (double)1 / (rad + rad + 1);
    for (Evas_Coord y = 0; y < h; y++)
      {
-        int t, l, rr;
-        int fr, fg, fb, fa;
-        int lvr, lvg, lvb, lva;
-        int valr, valg, valb, vala;
+        int t;
+        int l;
+        int rr;
+        int fr;
+        int fg;
+        int fb;
+        int fa;
+        int lvr;
+        int lvg;
+        int lvb;
+        int lva;
+        int valr;
+        int valg;
+        int valb;
+        int vala;
 
         t = y * w;
         l = t;
@@ -336,9 +358,16 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
 static void
 _blur_horizontal(Ephoto_Filter *ef, double rad)
 {
-   Evas_Coord w, h;
-   int at, rt, gt, bt;
-   unsigned int *as, *rs, *gs, *bs;
+   Evas_Coord w;
+   Evas_Coord h;
+   int at;
+   int rt;
+   int gt;
+   int bt;
+   unsigned int *as;
+   unsigned int *rs;
+   unsigned int *gs;
+   unsigned int *bs;
    double iarr;
 
    w = ef->w;
@@ -360,10 +389,21 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
    iarr = (double)1 / (rad + rad + 1);
    for (Evas_Coord x = 0; x < w; x++)
      {
-        int t, l, rr;
-        int fr, fg, fb, fa;
-        int lvr, lvg, lvb, lva;
-        int valr, valg, valb, vala;
+        int t;
+        int l;
+        int rr;
+        int fr;
+        int fg;
+        int fb;
+        int fa;
+        int lvr;
+        int lvg;
+        int lvb;
+        int lva;
+        int valr;
+        int valg;
+        int valb;
+        int vala;
 
         t = x;
         l = t;
@@ -466,10 +506,14 @@ static void
 _blur(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   Evas_Coord w, h;
-   int wl, wu, m;
+   Evas_Coord w;
+   Evas_Coord h;
+   int wl;
+   int wu;
+   int m;
    unsigned int sizes[3];
-   double ideal, rad;
+   double ideal;
+   double rad;
 
    w = ef->w;
    h = ef->h;
@@ -504,11 +548,23 @@ static void
 _sharpen(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   unsigned int *p1, *p2, *p3;
-   int a, r, g, b;
-   int aa, rr, gg, bb;
-   int aaa, rrr, ggg, bbb;
-   Evas_Coord w, h;
+   unsigned int *p1;
+   unsigned int *p2;
+   unsigned int *p3;
+   int a;
+   int r;
+   int g;
+   int b;
+   int aa;
+   int rr;
+   int gg;
+   int bb;
+   int aaa;
+   int rrr;
+   int ggg;
+   int bbb;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -551,10 +607,18 @@ static void
 _dither(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   Evas_Coord w, h;
-   int a, r, g, b;
-   int rr, gg, bb;
-   int errr, errg, errb;
+   Evas_Coord w;
+   Evas_Coord h;
+   int a;
+   int r;
+   int g;
+   int b;
+   int rr;
+   int gg;
+   int bb;
+   int errr;
+   int errg;
+   int errb;
 
    w = ef->w;
    h = ef->h;
@@ -683,8 +747,14 @@ static void
 _grayscale(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   int gray, i, r, g, b, a;
-   Evas_Coord w, h;
+   int gray;
+   int i;
+   int r;
+   int g;
+   int b;
+   int a;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -712,8 +782,16 @@ static void
 _sepia(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   int i, r, rr, g, gg, b, bb, a;
-   Evas_Coord w, h;
+   int i;
+   int r;
+   int rr;
+   int g;
+   int gg;
+   int b;
+   int bb;
+   int a;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -748,9 +826,17 @@ static void
 _posterize(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   int i, rr, gg, bb, a;
-   double fr, fg, fb, rad;
-   Evas_Coord w, h;
+   int i;
+   int rr;
+   int gg;
+   int bb;
+   int a;
+   double fr;
+   double fg;
+   double fb;
+   double rad;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -788,8 +874,16 @@ static void
 _negative(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   int i, r, g, b, rr, gg, bb, a;
-   Evas_Coord w, h;
+   int i;
+   int r;
+   int g;
+   int b;
+   int rr;
+   int gg;
+   int bb;
+   int a;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -825,9 +919,21 @@ static void
 _dodge(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   double a, r, g, b, aa, rr, gg, bb;
-   int i, aaa, rrr, ggg, bbb;
-   Evas_Coord w, h;
+   double a;
+   int r;
+   int g;
+   int b;
+   int aa;
+   int rr;
+   int gg;
+   int bb;
+   int i;
+   int aaa;
+   int rrr;
+   int ggg;
+   int bbb;
+   Evas_Coord w;
+   Evas_Coord h;
 
    w = ef->w;
    h = ef->h;
@@ -870,7 +976,8 @@ static void
 _sobel(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    unsigned int *p;
    float sobx[3][3] = {{-1, 0, 1},
                        {-2, 0, 2},
@@ -886,15 +993,21 @@ _sobel(void *data, Ecore_Thread *th EINA_UNUSED)
         p = ef->im_data_new + (y * w);
         for (Evas_Coord x = 0; x < w; x++)
           {
-             int pval = 0, a, r, g, b;
-             double hpval = 0.0, vpval = 0.0;
+             int pval = 0;
+             int a;
+             int r;
+             int g;
+             int b;
+             double hpval = 0.0;
+             double vpval = 0.0;
              if (y > 0 && x > 0 && y < (h - 2) && x < (w - 2))
                {
                   for (int i = -1; i <= 1; i++)
                     {
                        for (int j = -1; j <= 1; j++)
                          {
-                            int index, pix;
+                            int index;
+                            int pix;
 
                             index = (y + i) * w + x + j;
                             pix = ef->im_data[index];
@@ -923,7 +1036,8 @@ static void
 _emboss(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   Evas_Coord w, h;
+   Evas_Coord w;
+   Evas_Coord h;
    unsigned int *p;
    float emboss[3][3] = {{-2, -1, 0},
                          {-1, 1, 1},
@@ -936,14 +1050,18 @@ _emboss(void *data, Ecore_Thread *th EINA_UNUSED)
         p = ef->im_data_new + (y * w);
         for (Evas_Coord x = 0; x < w; x++)
           {
-             int aa = 0, rr = 0, gg = 0, bb = 0;
+             int aa = 0;
+             int rr = 0;
+             int gg = 0;
+             int bb = 0;
              if (y > 0 && x > 0 && y < (h - 2) && x < (w - 2))
                {
                   for (int i = -1; i <= 1; i++)
                     {
                        for (int j = -1; j <= 1; j++)
                          {
-                            int index, pix;
+                            int index;
+                            int pix;
                             index = (y + i) * w + x + j;
                             pix = ef->im_data[index];
                             bb += (pix & 0xff) *
@@ -971,12 +1089,24 @@ static void
 _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
 {
    Ephoto_Filter *ef = data;
-   Evas_Coord w, h;
-   unsigned int *p1, *p2;
-   int a, r, g, b, bb, gg, rr, norm;
+   Evas_Coord w;
+   Evas_Coord h;
+   unsigned int *p1;
+   unsigned int *p2;
+   int a;
+   int r;
+   int g;
+   int b;
+   int bb;
+   int gg;
+   int rr;
+   int norm;
    int total;
    double sum;
-   float hh, s, v, nv;
+   float hh;
+   float s;
+   float v;
+   float nv;
 
    w = ef->w;
    h = ef->h;
