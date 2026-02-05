@@ -288,7 +288,8 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
           }
         for (int i = 0; i <= rad; i++)
           {
-             int r = rr++;
+             rr++;
+             int r = rr;
 
              valb += bs[r] - fb;
              valg += gs[r] - fg;
@@ -309,8 +310,10 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
           }
         for (int i = rad + 1; i < w - rad; i++)
           {
-             int r = rr++;
-             int ll = l++;
+             rr++;
+             l++;
+             int r = rr;
+             int ll = l;
 
              valb += bs[r] - bs[ll];
              valg += gs[r] - gs[ll];
@@ -330,7 +333,8 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
           }
         for (int i = w - rad; i < w; i++)
           {
-             int ll = l++;
+             l++;
+             int ll = l;
 
              valb += lvb - bs[ll];
              valg += lvg - gs[ll];
