@@ -221,6 +221,15 @@ _to_rgba(const unsigned int *p, int *r, int *g, int *b, int *a)
 }
 
 static void
+_to_rgba_mul_color_alpha(const unsigned int *p, int *r, int *g, int *b, int *a)
+{
+    _to_rgba(p, r, g, b, a);
+    *b = ephoto_mul_color_alpha(*b, *a);
+    *g = ephoto_mul_color_alpha(*g, *a);
+    *r = ephoto_mul_color_alpha(*r, *a);
+}
+
+static void
 _blur_vertical(Ephoto_Filter *ef, double rad)
 {
    Evas_Coord w;
@@ -627,10 +636,7 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
           {
              int index = y * w + x;
 
-            _to_rgba(&(ef->im_data_new[index]), &r, &g, &b, &a);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
+            _to_rgba_mul_color_alpha(&(ef->im_data_new[index]), &r, &g, &b, &a);
              bb = (b > 127) ? 255 : 0;
              gg = (g > 127) ? 255 : 0;
              rr = (r > 127) ? 255 : 0;
@@ -649,10 +655,7 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((x + 1) < w)
                {
                   index = y * w + x + 1;
-                  _to_rgba(&(ef->im_data_new[index]), &r, &g, &b, &a);
-                  b = ephoto_mul_color_alpha(b, a);
-                  g = ephoto_mul_color_alpha(g, a);
-                  r = ephoto_mul_color_alpha(r, a);
+                  _to_rgba_mul_color_alpha(&(ef->im_data_new[index]), &r, &g, &b, &a);
                   bb = b + ((7 * errb) >> 4);
                   gg = g + ((7 * errg) >> 4);
                   rr = r + ((7 * errr) >> 4);
@@ -668,10 +671,7 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if (x > 0 && (y + 1) < h)
                {
                   index = (y + 1) * w + (x - 1);
-                  _to_rgba(&(ef->im_data_new[index]), &r, &g, &b, &a);
-                  b = ephoto_mul_color_alpha(b, a);
-                  g = ephoto_mul_color_alpha(g, a);
-                  r = ephoto_mul_color_alpha(r, a);
+                  _to_rgba_mul_color_alpha(&(ef->im_data_new[index]), &r, &g, &b, &a);
                   bb = b + ((3 * errb) >> 4);
                   gg = g + ((3 * errg) >> 4);
                   rr = r + ((3 * errr) >> 4);
@@ -687,10 +687,7 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((y + 1) < h)
                {
                   index = (y + 1) * w + x;
-                  _to_rgba(&(ef->im_data_new[index]), &r, &g, &b, &a);
-                  b = ephoto_mul_color_alpha(b, a);
-                  g = ephoto_mul_color_alpha(g, a);
-                  r = ephoto_mul_color_alpha(r, a);
+                  _to_rgba_mul_color_alpha(&(ef->im_data_new[index]), &r, &g, &b, &a);
                   bb = b + ((5 * errb) >> 4);
                   gg = g + ((5 * errg) >> 4);
                   rr = r + ((5 * errr) >> 4);
@@ -706,10 +703,7 @@ _dither(void *data, Ecore_Thread *th EINA_UNUSED)
              if ((y + 1) < h && (x + 1) < w)
                {
                   index = (y + 1) * w + (x + 1);
-                  _to_rgba(&(ef->im_data_new[index]), &r, &g, &b, &a);
-                  b = ephoto_mul_color_alpha(b, a);
-                  g = ephoto_mul_color_alpha(g, a);
-                  r = ephoto_mul_color_alpha(r, a);
+                  _to_rgba_mul_color_alpha(&(ef->im_data_new[index]), &r, &g, &b, &a);
                   bb = b + ((1 * errb) >> 4);
                   gg = g + ((1 * errg) >> 4);
                   rr = r + ((1 * errr) >> 4);
@@ -746,10 +740,7 @@ _grayscale(void *data, Ecore_Thread *th EINA_UNUSED)
         for (Evas_Coord x = 0; x < w; x++)
           {
              i = y * w + x;
-             _to_rgba(&(ef->im_data[i]), &r, &g, &b, &a);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
+             _to_rgba_mul_color_alpha(&(ef->im_data[i]), &r, &g, &b, &a);
              gray = (int)((0.3 * r) + (0.59 * g) + (0.11 * b));
              if (a >= 0 && a < 255)
                gray = (gray * a) / 255;
@@ -781,10 +772,7 @@ _sepia(void *data, Ecore_Thread *th EINA_UNUSED)
           {
              i = y * w + x;
 
-             _to_rgba(&(ef->im_data[i]), &r, &g, &b, &a);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
+             _to_rgba_mul_color_alpha(&(ef->im_data[i]), &r, &g, &b, &a);
              rr = (int)((r * .393) + (g * .769) + (b * .189));
              rr = ephoto_normalize_color(rr);
              gg = ((r * .349) + (g * .686) + (b * .168));
@@ -823,10 +811,7 @@ _posterize(void *data, Ecore_Thread *th EINA_UNUSED)
         for (Evas_Coord x = 0; x < w; x++)
           {
              i = y * w + x;
-             _to_rgba(&(ef->im_data[i]), &rr, &gg, &bb, &a);
-             fb = ephoto_mul_color_alpha(bb, a);
-             fg = ephoto_mul_color_alpha(gg, a);
-             fr = ephoto_mul_color_alpha(rr, a);
+             _to_rgba_mul_color_alpha(&(ef->im_data[i]), &rr, &gg, &bb, &a);
              fr /= 255;
              fg /= 255;
              fb /= 255;
@@ -866,10 +851,7 @@ _negative(void *data, Ecore_Thread *th EINA_UNUSED)
         for (Evas_Coord x = 0; x < w; x++)
           {
              i = y * w + x;
-             _to_rgba(&(ef->im_data[i]), &r, &g, &b, &a);
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
+             _to_rgba_mul_color_alpha(&(ef->im_data[i]), &r, &g, &b, &a);
              rr = 255 - r;
              gg = 255 - g;
              bb = 255 - b;
@@ -1053,12 +1035,7 @@ static void _rgb_to_hsv(const unsigned int *p1, int *a,
     int g;
     int b;
 
-    _to_rgba(p1, &r, &g, &b, a);
-
-    b = ephoto_mul_color_alpha(b, *a);
-    g = ephoto_mul_color_alpha(g, *a);
-    r = ephoto_mul_color_alpha(r, *a);
-
+    _to_rgba_mul_color_alpha(p1, &r, &g, &b, a);
     evas_color_rgb_to_hsv(r, g, b, hh, s, v);
 }
 
