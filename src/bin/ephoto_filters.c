@@ -1089,6 +1089,25 @@ _emboss(void *data, Ecore_Thread *th EINA_UNUSED)
      }
 }
 
+static void _rgb_to_hsv(const unsigned int *p1, int *a,
+                        float *hh, float *s, float *v)
+{
+    int r;
+    int g;
+    int b;
+
+    b = *p1 & 0xff;
+    g = (*p1 >> 8) & 0xff;
+    r = (*p1 >> 16) & 0xff;
+    *a = (*p1 >> 24) & 0xff;
+
+    b = ephoto_mul_color_alpha(b, *a);
+    g = ephoto_mul_color_alpha(g, *a);
+    r = ephoto_mul_color_alpha(r, *a);
+
+    evas_color_rgb_to_hsv(r, g, b, hh, s, v);
+}
+
 static void
 _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
 {
@@ -1098,9 +1117,6 @@ _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
    unsigned int *p1;
    unsigned int *p2;
    int a;
-   int r;
-   int g;
-   int b;
    int bb;
    int gg;
    int rr;
@@ -1120,14 +1136,7 @@ _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
         p1 = ef->im_data + (y * w);
         for (Evas_Coord x = 0; x < w; x++)
           {
-             b = *p1 & 0xff;
-             g = (*p1 >> 8) & 0xff;
-             r = (*p1 >> 16) & 0xff;
-             a = (*p1 >> 24) & 0xff;
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
-             evas_color_rgb_to_hsv(r, g, b, &hh, &s, &v);
+             _rgb_to_hsv(p1, &a, &hh, &s, &v);
              norm = (int)round((double)v * (double)255);
              ef->hist[norm] += 1;
              p1++;
@@ -1146,14 +1155,7 @@ _histogram_eq(void *data, Ecore_Thread *th EINA_UNUSED)
         p2 = ef->im_data_new + (y * w);
         for (Evas_Coord x = 0; x < w; x++)
           {
-             b = *p1 & 0xff;
-             g = (*p1 >> 8) & 0xff;
-             r = (*p1 >> 16) & 0xff;
-             a = (*p1 >> 24) & 0xff;
-             b = ephoto_mul_color_alpha(b, a);
-             g = ephoto_mul_color_alpha(g, a);
-             r = ephoto_mul_color_alpha(r, a);
-             evas_color_rgb_to_hsv(r, g, b, &hh, &s, &v);
+             _rgb_to_hsv(p1, &a, &hh, &s, &v);
              norm = (int)round((double)v * (double)255);
              nv = (float)ef->cdf[norm] / (float)255;
              evas_color_hsv_to_rgb(hh, s, nv, &rr, &gg, &bb);
