@@ -253,7 +253,7 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
    bs = malloc(sizeof(int) * w * h);
 
    for (int i = 0; i < w * h; i++)
-        _to_rgba(&(ef->im_data[i]), &bs[i], &gs[i], &rs[i], &as[i]);
+        _to_rgba(&(ef->im_data[i]), &rs[i], &gs[i], &bs[i], &as[i]);
 
    iarr = (double)1 / (rad + rad + 1);
    for (Evas_Coord y = 0; y < h; y++)
@@ -397,7 +397,7 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
    bs = malloc(sizeof(int) * w * h);
 
    for (int i = 0; i < w * h; i++)
-        _to_rgba(&(ef->im_data_new[i]), &bs[i], &gs[i], &rs[i], &as[i]);
+        _to_rgba(&(ef->im_data_new[i]), &rs[i], &gs[i], &bs[i], &as[i]);
 
    iarr = (double)1 / (rad + rad + 1);
    for (Evas_Coord x = 0; x < w; x++)
