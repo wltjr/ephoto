@@ -229,15 +229,32 @@ _to_rgba_mul_color_alpha(const unsigned int *p, int *r, int *g, int *b, int *a)
     *r = ephoto_mul_color_alpha(*r, *a);
 }
 
+static int
+_round_normalize_color(int *valr, int *valg, int *valb, int *vala, double *iarr)
+{
+    int at;
+    int rt;
+    int gt;
+    int bt;
+
+    bt = (int)round(*valb * *iarr);
+    gt = (int)round(*valg * *iarr);
+    rt = (int)round(*valr * *iarr);
+    at = (int)round(*vala * *iarr);
+
+    bt = ephoto_normalize_color(bt);
+    gt = ephoto_normalize_color(gt);
+    rt = ephoto_normalize_color(rt);
+    at = ephoto_normalize_color(at);
+
+    return (at << 24) | (rt << 16) | (gt << 8) | bt;
+}
+
 static void
 _blur_vertical(Ephoto_Filter *ef, double rad)
 {
    Evas_Coord w;
    Evas_Coord h;
-   int at;
-   int rt;
-   int gt;
-   int bt;
    int *as;
    int *rs;
    int *gs;
@@ -310,17 +327,8 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
              valr += rs[r] - fr;
              vala += as[r] - fa;
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data_new[t++] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data_new[t++] =
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
         for (int i = rad + 1; i < w - rad; i++)
           {
@@ -334,16 +342,8 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
              valr += rs[r] - rs[ll];
              vala += as[r] - as[ll];
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data_new[t++] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data_new[t++] =
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
         for (int i = w - rad; i < w; i++)
           {
@@ -355,16 +355,8 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
              valr += lvr - rs[ll];
              vala += lva - as[ll];
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data_new[t++] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data_new[t++] = 
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
      }
    free(bs);
@@ -378,10 +370,6 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
 {
    Evas_Coord w;
    Evas_Coord h;
-   int at;
-   int rt;
-   int gt;
-   int bt;
    int *as;
    int *rs;
    int *gs;
@@ -451,16 +439,8 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
              valr += rs[rr] - fr;
              vala += as[rr] - fa;
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data[t] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data[t] = 
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
 
              rr += w;
              t += w;
@@ -472,16 +452,8 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
              valr += rs[rr] - rs[l];
              vala += as[rr] - as[l];
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data[t] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data[t] = 
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
 
              l += w;
              rr += w;
@@ -494,16 +466,8 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
              valr += lvr - rs[l];
              vala += lva - as[l];
 
-             bt = (int)round(valb * iarr);
-             gt = (int)round(valg * iarr);
-             rt = (int)round(valr * iarr);
-             at = (int)round(vala * iarr);
-             bt = ephoto_normalize_color(bt);
-             gt = ephoto_normalize_color(gt);
-             rt = ephoto_normalize_color(rt);
-             at = ephoto_normalize_color(at);
-             ef->im_data[t] = (at << 24) | (rt << 16)
-               | (gt << 8) | bt;
+             ef->im_data[t] = 
+                _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
 
              l += w;
              t += w;
