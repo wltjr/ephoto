@@ -39,9 +39,9 @@ _ephoto_bcg_adjust_img(const unsigned int *p1, const float *bcg,
     g = (int)((*p1 >> 8) & 0xff);
     r = (int)((*p1 >> 16) & 0xff);
     a = (int)((*p1 >> 24) & 0xff);
-    b = ephoto_mul_color_alpha(b, a);
-    g = ephoto_mul_color_alpha(g, a);
-    r = ephoto_mul_color_alpha(r, a);
+    b = bb = ephoto_mul_color_alpha(b, a);
+    g = gg = ephoto_mul_color_alpha(g, a);
+    r = rr = ephoto_mul_color_alpha(r, a);
     if (BRIGHTNESS == adjust)
     {
         bb = b + (int)*bcg;
@@ -59,12 +59,6 @@ _ephoto_bcg_adjust_img(const unsigned int *p1, const float *bcg,
         bb = (int)(pow(((double)b / 255), *bcg) * 255);
         gg = (int)(pow(((double)g / 255), *bcg) * 255);
         rr = (int)(pow(((double)r / 255), *bcg) * 255);
-    }
-    else
-    {
-        bb = b;
-        gg = g;
-        rr = r;
     }
     bb = ephoto_normalize_color(bb);
     gg = ephoto_normalize_color(gg);
