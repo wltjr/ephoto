@@ -363,7 +363,8 @@ Evas_Object *
 ephoto_window_add(const char *path)
 {
    Ephoto *ephoto = calloc(1, sizeof(Ephoto));
-   Evas_Object *ic, *but;
+   Evas_Object *ic;
+   Evas_Object *but;
    char buf[PATH_MAX];
    char config[PATH_MAX];
    char trash[PATH_MAX];
