@@ -249,12 +249,26 @@ _round_normalize_color(int *valr, int *valg, int *valb, int *vala, double *iarr)
 
     return (at << 24) | (rt << 16) | (gt << 8) | bt;
 }
-
 static void
-_blur_vertical(Ephoto_Filter *ef, double rad)
+_blur_horz_vert(Ephoto_Filter *ef, double rad, bool horizonal)
 {
    Evas_Coord w;
    Evas_Coord h;
+   int t;
+   int l;
+   int rr;
+   int fr;
+   int fg;
+   int fb;
+   int fa;
+   int lvr;
+   int lvg;
+   int lvb;
+   int lva;
+   int valr;
+   int valg;
+   int valb;
+   int vala;
    int *as;
    int *rs;
    int *gs;
@@ -269,28 +283,21 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
    gs = malloc(sizeof(int) * w * h);
    bs = malloc(sizeof(int) * w * h);
 
-   for (int i = 0; i < w * h; i++)
-        _to_rgba(&(ef->im_data[i]), &rs[i], &gs[i], &bs[i], &as[i]);
+    if(horizonal)
+       for (int i = 0; i < w * h; i++)
+            _to_rgba(&(ef->im_data_new[i]), &rs[i], &gs[i], &bs[i], &as[i]);
+    else
+       for (int i = 0; i < w * h; i++)
+            _to_rgba(&(ef->im_data[i]), &rs[i], &gs[i], &bs[i], &as[i]);
 
    iarr = (double)1 / (rad + rad + 1);
+
+    if(horizonal)
+        goto horizonal;
+
+    // vertical
    for (Evas_Coord y = 0; y < h; y++)
      {
-        int t;
-        int l;
-        int rr;
-        int fr;
-        int fg;
-        int fb;
-        int fa;
-        int lvr;
-        int lvg;
-        int lvb;
-        int lva;
-        int valr;
-        int valg;
-        int valb;
-        int vala;
-
         t = y * w;
         l = t;
         rr = t + rad;
@@ -327,7 +334,7 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
              valr += rs[r] - fr;
              vala += as[r] - fa;
 
-             ef->im_data_new[t++] =
+             ef->im_data_new[t++] = 
                 _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
         for (int i = rad + 1; i < w - rad; i++)
@@ -342,7 +349,7 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
              valr += rs[r] - rs[ll];
              vala += as[r] - as[ll];
 
-             ef->im_data_new[t++] =
+             ef->im_data_new[t++] = 
                 _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
         for (int i = w - rad; i < w; i++)
@@ -359,53 +366,11 @@ _blur_vertical(Ephoto_Filter *ef, double rad)
                 _round_normalize_color(&valb, &valg, &valr, &vala, &iarr);
           }
      }
-   free(bs);
-   free(gs);
-   free(rs);
-   free(as);
-}
+     goto end_and_free;
 
-static void
-_blur_horizontal(Ephoto_Filter *ef, double rad)
-{
-   Evas_Coord w;
-   Evas_Coord h;
-   int *as;
-   int *rs;
-   int *gs;
-   int *bs;
-   double iarr;
-
-   w = ef->w;
-   h = ef->h;
-
-   as = malloc(sizeof(int) * w * h);
-   rs = malloc(sizeof(int) * w * h);
-   gs = malloc(sizeof(int) * w * h);
-   bs = malloc(sizeof(int) * w * h);
-
-   for (int i = 0; i < w * h; i++)
-        _to_rgba(&(ef->im_data_new[i]), &rs[i], &gs[i], &bs[i], &as[i]);
-
-   iarr = (double)1 / (rad + rad + 1);
+     horizonal:
    for (Evas_Coord x = 0; x < w; x++)
      {
-        int t;
-        int l;
-        int rr;
-        int fr;
-        int fg;
-        int fb;
-        int fa;
-        int lvr;
-        int lvg;
-        int lvb;
-        int lva;
-        int valr;
-        int valg;
-        int valb;
-        int vala;
-
         t = x;
         l = t;
         rr = t + rad * w;
@@ -473,6 +438,8 @@ _blur_horizontal(Ephoto_Filter *ef, double rad)
              t += w;
           }
      }
+
+     end_and_free:
    free(bs);
    free(gs);
    free(rs);
@@ -516,8 +483,8 @@ _blur(void *data, Ecore_Thread *th EINA_UNUSED)
 
         memcpy(ef->im_data_new, ef->im_data,
                sizeof(unsigned int) * w * h);
-        _blur_vertical(ef, rad);
-        _blur_horizontal(ef, rad);
+        _blur_horz_vert(ef, rad, false);    // vertical
+        _blur_horz_vert(ef, rad, true);     // horizontal
      }
 }
 
