@@ -22,35 +22,18 @@ _config_save_cb(void *data, Evas_Object *obj EINA_UNUSED,
    Evas_Object *popup = data;
    Ephoto *ephoto = evas_object_data_get(popup, "ephoto");
    const char *path;
-   const char *text = elm_object_text_get(ephoto->config->open_dir);
 
-   if (!strcmp(text, _("Root Directory")))
-     path = "/";
-   else if (!strcmp(text, _("Home Directory")))
-     path = eina_environment_home_get();
-   else if (!strcmp(text, _("Last Open Directory")))
-     path = "Last";
-   else
-     path = elm_object_text_get(ephoto->config->open_dir_custom);
-
-   if (!path)
-     path = eina_environment_home_get();
+   path = eina_environment_home_get();
    if (!path)
      path = "/";
 
-   if (ecore_file_is_dir(path) || !strcmp(path, "Last"))
-     eina_stringshare_replace(&ephoto->config->open, path);
-   if (strcmp(path, ephoto->config->directory) && strcmp(path, "Last") &&
-       ecore_file_exists(path))
-     {
-        char *rp = ecore_file_realpath(path);
-        ephoto_directory_browser_clear(ephoto);
-        ephoto_thumb_browser_clear(ephoto);
-        eina_stringshare_replace(&ephoto->config->directory, rp);
-        ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
-        ephoto_directory_browser_initialize_structure(ephoto, rp);
-        free(rp);
-     }
+    char *rp = ecore_file_realpath(path);
+    ephoto_directory_browser_clear(ephoto);
+    ephoto_thumb_browser_clear(ephoto);
+    eina_stringshare_replace(&ephoto->config->directory, rp);
+    ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
+    ephoto_directory_browser_initialize_structure(ephoto, rp);
+    free(rp);
    ephoto->config->prompts = elm_check_state_get(ephoto->config->show_prompts);
    ephoto->config->drop = elm_check_state_get(ephoto->config->move_drop);
    ephoto->config->movess = elm_check_state_get(ephoto->config->slide_move);
@@ -84,25 +67,10 @@ _config_save_cb(void *data, Evas_Object *obj EINA_UNUSED,
 }
 
 static void
-_open_hv_select(void *data, Evas_Object *obj, void *event_info)
-{
-   Ephoto *ephoto = data;
-
-   elm_object_text_set(obj, elm_object_item_text_get(event_info));
-
-   if (!strcmp(elm_object_item_text_get(event_info), _("Custom Directory")))
-     elm_object_disabled_set(ephoto->config->open_dir_custom, EINA_FALSE);
-   else
-     elm_object_disabled_set(ephoto->config->open_dir_custom, EINA_TRUE);
-}
-
-static void
 _config_general(Ephoto *ephoto, Evas_Object *parent)
 {
    Evas_Object *table;
    Evas_Object *check;
-   Evas_Object *hoversel;
-   Evas_Object *entry;
    Evas_Object *label;
    Evas_Object *spinner;
    char buf[PATH_MAX];
@@ -171,43 +139,6 @@ _config_general(Ephoto *ephoto, Evas_Object *parent)
    elm_table_pack(table, spinner, 0, 6, 1, 1);
    evas_object_show(spinner);
    ephoto->config->panel_size = spinner;
-
-   label = elm_label_add(table);
-   elm_object_text_set(label, _("Top Level Directory"));
-   EPHOTO_ALIGN(label, 0.5, 0.5);
-   elm_table_pack(table, label, 0, 7, 1, 1);
-   evas_object_show(label);
-
-   hoversel = elm_hoversel_add(table);
-   elm_hoversel_hover_parent_set(hoversel, ephoto->win);
-   elm_hoversel_item_add(hoversel, _("Root Directory"), NULL, 0,
-                         _open_hv_select, ephoto);
-   elm_hoversel_item_add(hoversel, _("Home Directory"), NULL, 0,
-                         _open_hv_select, ephoto);
-   elm_hoversel_item_add(hoversel, _("Last Open Directory"), NULL, 0,
-                         _open_hv_select, ephoto);
-   elm_hoversel_item_add(hoversel, _("Custom Directory"), NULL, 0,
-                         _open_hv_select, ephoto);
-   elm_object_text_set(hoversel, ephoto->config->open);
-   evas_object_data_set(hoversel, "ephoto", ephoto);
-   EPHOTO_WEIGHT(hoversel, EVAS_HINT_EXPAND, EVAS_HINT_FILL);
-   EPHOTO_FILL(hoversel);
-   elm_table_pack(table, hoversel, 0, 8, 1, 1);
-   evas_object_show(hoversel);
-   ephoto->config->open_dir = hoversel;
-
-   entry = elm_entry_add(table);
-   elm_entry_single_line_set(entry, EINA_TRUE);
-   elm_entry_scrollable_set(entry, EINA_TRUE);
-   elm_object_text_set(entry, _("Custom Directory"));
-   elm_object_disabled_set(entry, EINA_TRUE);
-   elm_scroller_policy_set(entry, ELM_SCROLLER_POLICY_OFF,
-                           ELM_SCROLLER_POLICY_OFF);
-   EPHOTO_EXPAND(entry);
-   EPHOTO_FILL(entry);
-   elm_table_pack(table, entry, 0, 9, 1, 1);
-   evas_object_show(entry);
-   ephoto->config->open_dir_custom = entry;
 }
 
 static void
@@ -816,7 +747,6 @@ Eina_Bool
 ephoto_config_init(Ephoto *ephoto)
 {
    Eet_Data_Descriptor_Class eddc;
-   char *home;
 
    if (!eet_eina_stream_data_descriptor_class_set(&eddc, sizeof(eddc),
                                                   "Ephoto_Config", sizeof(Ephoto_Config)))
@@ -867,10 +797,6 @@ ephoto_config_init(Ephoto *ephoto)
     ephoto->config->fsel_hide = 0;
     ephoto->config->left_size = .25;
     ephoto->config->right_size = .25;
-    // Some systems use a symlink to the user's home directory (e.g. FreeBSD).
-    home = ecore_file_realpath(eina_environment_home_get());
-    ephoto->config->open = eina_stringshare_add(home);
-    free(home);
     ephoto->config->prompts = 1;
     ephoto->config->drop = 0;
     ephoto->config->movess = 1;
