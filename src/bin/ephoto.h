@@ -46,7 +46,7 @@ typedef enum _Ephoto_Sort                 Ephoto_Sort;
 typedef enum _Ephoto_Ipc_Domain           Ephoto_Ipc_Domain;
 
 /*main window functions*/
-Evas_Object *ephoto_window_add(const char *path, int EINA_UNUSED, int id);
+Evas_Object *ephoto_window_add(const char *path);
 void         ephoto_title_set(Ephoto *ephoto, const char *title);
 void         ephoto_thumb_size_set(Ephoto *ephoto, int size);
 Evas_Object *ephoto_thumb_add(Ephoto *ephoto, Evas_Object *parent,
