@@ -230,7 +230,8 @@ _to_rgba_mul_color_alpha(const unsigned int *p, int *r, int *g, int *b, int *a)
 }
 
 static int
-_round_normalize_color(int *valr, int *valg, int *valb, int *vala, double *iarr)
+_round_normalize_color(const int *valr, const int *valg, const int *valb,
+                       const int *vala, const double *iarr)
 {
     int at;
     int rt;
