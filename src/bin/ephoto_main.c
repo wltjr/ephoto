@@ -575,22 +575,10 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
 
    if ((!path) || (!ecore_file_exists(path)))
      {
-        if (ephoto->config->open)
-          {
-             if (!strcmp(ephoto->config->open, "Last"))
-               path = ephoto->config->directory;
-             else
-               path = ephoto->config->open;
-             if (path && (!ecore_file_exists(path)))
-               path = NULL;
-          }
-        else if (!ephoto->config->open || path)
-          {
-             if (getcwd(buf, sizeof(buf)))
-               path = buf;
-             else
-               path = eina_environment_home_get();
-          }
+        if (getcwd(buf, sizeof(buf)))
+            path = buf;
+        else
+            path = eina_environment_home_get();
      }
 
    if (ecore_file_is_dir(path))
@@ -622,7 +610,7 @@ ephoto_window_add(const char *path, int EINA_UNUSED, int id)
    ephoto->trash_path = eina_stringshare_add(trash);
 
     ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
-    ephoto_directory_browser_initialize_structure(ephoto, ephoto->config->open);
+    ephoto_directory_browser_initialize_structure(ephoto, ephoto->config->directory);
     evas_object_resize(ephoto->win, ephoto->config->window_width,
                         ephoto->config->window_height);
    evas_object_show(ephoto->win);
