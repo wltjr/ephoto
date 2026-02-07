@@ -360,7 +360,7 @@ ephoto_show_folders(Ephoto *ephoto, Eina_Bool toggle)
 }
 
 Evas_Object *
-ephoto_window_add(const char *path, int EINA_UNUSED, int id)
+ephoto_window_add(const char *path)
 {
    Ephoto *ephoto = calloc(1, sizeof(Ephoto));
    Evas_Object *ic, *but;
