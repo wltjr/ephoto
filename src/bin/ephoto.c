@@ -5,7 +5,6 @@ static void _ephoto_display_usage(void);
 int
 main(int argc, char *argv[])
 {
-   int id_num = 0;
    int r = 0;
 
    elm_init(argc, argv);
@@ -39,7 +38,7 @@ main(int argc, char *argv[])
      }
    else if (argc < 2)
      {
-        Evas_Object *win = ephoto_window_add(NULL, 0, id_num);
+        Evas_Object *win = ephoto_window_add(NULL);
 
         if (!win)
           {
@@ -63,7 +62,7 @@ main(int argc, char *argv[])
              r = 1;
              goto end;
           }
-        Evas_Object *win = ephoto_window_add(real, 0, id_num);
+        Evas_Object *win = ephoto_window_add(real);
 
         free(real);
         if (!win)
