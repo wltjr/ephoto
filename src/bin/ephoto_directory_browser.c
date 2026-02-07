@@ -1241,34 +1241,10 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, const char *rp)
    Elm_Object_Item *cur = NULL;
    Ephoto_Entry *tentry = NULL;
    char top[PATH_MAX];
-   char path[PATH_MAX];
    char *dir;
-   char *end_dir;
    int count = 0;
    const Elm_Genlist_Item_Class *tic;
 
-   end_dir = strdup(ephoto->config->directory);
-   if (strcmp(ephoto->config->open, ephoto->config->directory))
-     {
-        if (!strncmp(ephoto->config->open, ephoto->config->directory,
-                 strlen(ephoto->config->open)))
-          {
-             snprintf(path, PATH_MAX, "%s", ephoto->config->directory);
-             dirs = eina_list_prepend(dirs, strdup(path));
-             dir = strdup(path);
-             while (strcmp(dir, ephoto->config->open))
-               {
-                  free(dir);
-                  dir = NULL;
-                  dir = ecore_file_dir_get(path);
-                  dirs = eina_list_prepend(dirs, strdup(dir));
-                  memset(path, 0x00, sizeof(path));
-                  snprintf(path, PATH_MAX, "%s", dir);
-               }
-             free(dir);
-             dir = NULL;
-          }
-     }
    snprintf(top, PATH_MAX, "%s", rp);
    tentry = ephoto_entry_new(ephoto, rp, basename(top),
                              EINA_FILE_DIR);
@@ -1356,20 +1332,12 @@ ephoto_directory_browser_initialize_structure(Ephoto *ephoto, const char *rp)
      }
 
    db->initializing = EINA_TRUE;
-   if (count)
-     {
-        ephoto_directory_set(ephoto, end_dir, next, EINA_FALSE, EINA_TRUE);
-        ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->open);
-     }
-   else
-     {
-        ephoto_directory_set(ephoto, ephoto->config->directory, tentry->item,
-                             EINA_FALSE, EINA_FALSE);
-        ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
-     }
+
+    ephoto_directory_set(ephoto, ephoto->config->directory, tentry->item,
+                            EINA_FALSE, EINA_FALSE);
+    ephoto_directory_browser_top_dir_set(ephoto, ephoto->config->directory);
    ephoto_title_set(ephoto, ephoto->config->directory);
    db->initializing = EINA_FALSE;
-   free(end_dir);
 }
 
 Evas_Object *
