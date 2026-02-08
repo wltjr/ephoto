@@ -23,8 +23,9 @@ static const Ecore_Getopt options =
 int
 main(int argc, char *argv[])
 {
-   int return_code = EXIT_SUCCESS;
-   unsigned char quit_option = 0;
+    char *real = NULL;
+    int return_code = EXIT_SUCCESS;
+    unsigned char quit_option = 0;
 
     Ecore_Getopt_Value values[] =
         {
@@ -61,35 +62,28 @@ main(int argc, char *argv[])
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
-   if (argc < 2)
-     {
-        Evas_Object *win = ephoto_window_add(NULL);
-
-        if (!win)
-          {
-             return_code = EXIT_FAILURE;
-             goto end;
-          }
-     }
-   else
-     {
-        char *real = ecore_file_realpath(argv[1]);
+    if (argc)
+    {
+        real = ecore_file_realpath(argv[1]);
 
         if (!real)
-          {
-             printf("invalid file or directory: '%s'\n", argv[1]);
-             return_code = EXIT_FAILURE;
-             goto end;
-          }
-        Evas_Object *win = ephoto_window_add(real);
+        {
+            printf("invalid file or directory: '%s'\n", argv[1]);
+            return_code = EXIT_FAILURE;
+            goto end;
+        }
+    }
 
+    Evas_Object *win = ephoto_window_add(real);
+
+    if(real)
         free(real);
-        if (!win)
-          {
-             return_code = EXIT_FAILURE;
-             goto end;
-          }
-     }
+
+    if (!win)
+    {
+        return_code = EXIT_FAILURE;
+        goto end;
+    }
 
    ecore_main_loop_begin();
 end:
