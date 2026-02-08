@@ -1,11 +1,43 @@
 #include "ephoto.h"
 
-static void _ephoto_display_usage(void);
+#include <Ecore_Getopt.h>
+
+static const Ecore_Getopt options =
+{
+   "entrance_client",
+   "%prog [options]",
+   VERSION,
+   "(C) 2026 William L Thomson Jr, see AUTHORS.",
+   "MIT, see COPYING",
+   "A comprehensive image viewer",
+   EINA_TRUE,
+   {
+      ECORE_GETOPT_HELP ('h', "help"),
+      ECORE_GETOPT_VERSION('V', "version"),
+      ECORE_GETOPT_COPYRIGHT('R', "copyright"),
+      ECORE_GETOPT_LICENSE('L', "license"),
+      ECORE_GETOPT_SENTINEL
+   }
+};
 
 int
 main(int argc, char *argv[])
 {
    int return_code = EXIT_SUCCESS;
+   unsigned char quit_option = 0;
+
+    Ecore_Getopt_Value values[] =
+        {
+            ECORE_GETOPT_VALUE_BOOL(quit_option),
+            ECORE_GETOPT_VALUE_BOOL(quit_option),
+            ECORE_GETOPT_VALUE_BOOL(quit_option),
+            ECORE_GETOPT_VALUE_BOOL(quit_option)
+        };
+
+    ecore_getopt_parse(&options, values, argc, argv);
+
+    if (quit_option)
+        return return_code;
 
    elm_init(argc, argv);
    eio_init();
@@ -29,14 +61,7 @@ main(int argc, char *argv[])
 
    elm_policy_set(ELM_POLICY_QUIT, ELM_POLICY_QUIT_LAST_WINDOW_CLOSED);
 
-   if (argc > 2)
-     {
-        printf("Too Many Arguments!\n");
-        _ephoto_display_usage();
-        return_code = EXIT_FAILURE;
-        goto end;
-     }
-   else if (argc < 2)
+   if (argc < 2)
      {
         Evas_Object *win = ephoto_window_add(NULL);
 
@@ -45,11 +70,6 @@ main(int argc, char *argv[])
              return_code = EXIT_FAILURE;
              goto end;
           }
-     }
-   else if (!strncmp(argv[1], "--help", 6))
-     {
-        _ephoto_display_usage();
-        goto end;
      }
    else
      {
@@ -79,14 +99,4 @@ end:
    elm_shutdown();
 
    return return_code;
-}
-
-/* Display useage commands for ephoto */
-static void
-_ephoto_display_usage(void)
-{
-    printf("ephoto Usage: \n"
-           "ephoto --help   : This page\n"
-           "ephoto filename : Specifies a file to open\n"
-           "ephoto dirname  : Specifies a directory to open\n");
 }
