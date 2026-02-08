@@ -5,7 +5,7 @@ static void _ephoto_display_usage(void);
 int
 main(int argc, char *argv[])
 {
-   int r = 0;
+   int return_code = EXIT_SUCCESS;
 
    elm_init(argc, argv);
    eio_init();
@@ -33,7 +33,7 @@ main(int argc, char *argv[])
      {
         printf("Too Many Arguments!\n");
         _ephoto_display_usage();
-        r = 1;
+        return_code = EXIT_FAILURE;
         goto end;
      }
    else if (argc < 2)
@@ -42,14 +42,13 @@ main(int argc, char *argv[])
 
         if (!win)
           {
-             r = 1;
+             return_code = EXIT_FAILURE;
              goto end;
           }
      }
    else if (!strncmp(argv[1], "--help", 6))
      {
         _ephoto_display_usage();
-        r = 0;
         goto end;
      }
    else
@@ -59,7 +58,7 @@ main(int argc, char *argv[])
         if (!real)
           {
              printf("invalid file or directory: '%s'\n", argv[1]);
-             r = 1;
+             return_code = EXIT_FAILURE;
              goto end;
           }
         Evas_Object *win = ephoto_window_add(real);
@@ -67,7 +66,7 @@ main(int argc, char *argv[])
         free(real);
         if (!win)
           {
-             r = 1;
+             return_code = EXIT_FAILURE;
              goto end;
           }
      }
@@ -79,7 +78,7 @@ end:
    eio_shutdown();
    elm_shutdown();
 
-   return r;
+   return return_code;
 }
 
 /* Display useage commands for ephoto */
