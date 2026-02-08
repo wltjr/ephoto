@@ -5,7 +5,7 @@
 static const Ecore_Getopt options =
 {
    "entrance_client",
-   "%prog [options]",
+   "%prog [directory or filename]",
    VERSION,
    "(C) 2026 William L Thomson Jr, see AUTHORS.",
    "MIT, see COPYING",
