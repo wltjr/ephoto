@@ -11,3 +11,20 @@ commit history and authorship for proper open source accreditation!
 
 Others may resume their efforts, like all things in FOSS, nobody cares till
 you do, then everyone has an opinion and is interested...
+
+## Build
+
+Meson is the build system used for this project. For more information please
+see: [http://mesonbuild.com](http://mesonbuild.com)
+
+### Build using meson
+
+```sh
+prefix=/usr/share
+meson \
+    --prefix "${prefix}" \
+    --bindir "${prefix}/bin" \
+    --datadir "${prefix}/share" \
+    . build
+ninja -C build install
+```
