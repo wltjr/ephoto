@@ -1,6 +1,6 @@
 # ephoto
 [![License](http://img.shields.io/badge/license-MIT-blue.svg?colorB=9977bb&style=plastic)](https://github.com/wltjr/ephoto/blob/master/LICENSE)
-![Build Status](https://github.com/wltjr/ephoto/actions/workflows/docker_build.yml/badge.svg)
+[![Build Status](https://github.com/wltjr/ephoto/actions/workflows/docker_build.yml/badge.svg)](https://github.com/wltjr/ephoto/actions)
 [![Code Quality](https://sonarcloud.io/api/project_badges/measure?project=wltjr_ephoto&metric=alert_status)](https://sonarcloud.io/dashboard?id=wltjr_ephoto)
 
 A comprehensive image viewer written using the core EFL.
