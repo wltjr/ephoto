@@ -76,13 +76,13 @@ _ephoto_bcg_adjust_img(Ephoto_BCG *ebcg, double *bcg,
             int gg;
             int rr;
 
-            b = bb = (int)(*p1 & 0xff);
-            g = gg = (int)((*p1 >> 8) & 0xff);
-            r = rr = (int)((*p1 >> 16) & 0xff);
+            b = (int)(*p1 & 0xff);
+            g = (int)((*p1 >> 8) & 0xff);
+            r = (int)((*p1 >> 16) & 0xff);
             a = (int)((*p1 >> 24) & 0xff);
-            b = ephoto_mul_color_alpha(b, a);
-            g = ephoto_mul_color_alpha(g, a);
-            r = ephoto_mul_color_alpha(r, a);
+            b = bb = ephoto_mul_color_alpha(b, a);
+            g = gg = ephoto_mul_color_alpha(g, a);
+            r = rr = ephoto_mul_color_alpha(r, a);
             if (BRIGHTNESS == adjust)
             {
                 bb = b + ebcg->brightness;
