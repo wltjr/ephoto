@@ -76,7 +76,7 @@ _ephoto_bcg_adjust_img(Ephoto_BCG *ebcg, double *bcg,
             int gg;
             int rr;
 
-            b = bb = (int)((*p1) & 0xff);
+            b = bb = (int)(*p1 & 0xff);
             g = gg = (int)((*p1 >> 8) & 0xff);
             r = rr = (int)((*p1 >> 16) & 0xff);
             a = (int)((*p1 >> 24) & 0xff);
