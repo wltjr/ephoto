@@ -4,7 +4,7 @@
 
 static const Ecore_Getopt options =
 {
-   "entrance_client",
+   "ephoto",
    "%prog [directory or filename]",
    VERSION,
    "(C) 2026 William L Thomson Jr, see AUTHORS.",
