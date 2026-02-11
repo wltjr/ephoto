@@ -120,21 +120,19 @@ _ephoto_bcg_adjust_img(Ephoto_BCG *ebcg, double *bcg,
 }
 
 unsigned int *
-_ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
+_ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, double brightness,
                               unsigned int *image_data)
 {
-    double value = brightness;
     _Ephoto_BCG_ADJUST adjust = BRIGHTNESS;
-    return _ephoto_bcg_adjust_img(ebcg, &value, image_data, adjust);
+    return _ephoto_bcg_adjust_img(ebcg, &brightness, image_data, adjust);
 }
 
 unsigned int *
-_ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
+_ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, double contrast,
                             unsigned int *image_data)
 {
-    double value = contrast;
     _Ephoto_BCG_ADJUST adjust = CONTRAST;
-    return _ephoto_bcg_adjust_img(ebcg, &value, image_data, adjust);
+    return _ephoto_bcg_adjust_img(ebcg, &contrast, image_data, adjust);
 }
 
 unsigned int *
@@ -150,7 +148,7 @@ _brightness_slider_changed(void *data, Evas_Object *obj,
                            void *event_info EINA_UNUSED)
 {
    Ephoto_BCG *ebcg = data;
-   int brightness;
+   double brightness;
    unsigned int *image_data;
    unsigned int *image_data_two;
 
@@ -166,7 +164,7 @@ _contrast_slider_changed(void *data, Evas_Object *obj,
                          void *event_info EINA_UNUSED)
 {
    Ephoto_BCG *ebcg = data;
-   int contrast;
+   double contrast;
    unsigned int *image_data;
    unsigned int *image_data_two;
 
