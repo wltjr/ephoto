@@ -40,6 +40,13 @@ main(int argc, char *argv[])
     if (quit_option)
         return return_code;
 
+    if(argc > 2)
+    {
+        printf("Error: Too Many Arguments!\n\n");
+        ecore_getopt_help(stdout, &options);
+        return EXIT_FAILURE;
+    }
+
    elm_init(argc, argv);
    eio_init();
    elm_need_efreet();
