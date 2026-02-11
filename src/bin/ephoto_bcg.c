@@ -23,171 +23,126 @@ typedef enum {
     BRIGHTNESS, CONTRAST, GAMMA
 } _Ephoto_BCG_ADJUST;
 
-unsigned int
-_ephoto_bcg_adjust_img(const unsigned int *p1, const float *bcg,
-                       _Ephoto_BCG_ADJUST adjust)
+unsigned int *
+_ephoto_bcg_adjust_img(Ephoto_BCG *ebcg, double *bcg,
+                       unsigned int *image_data, _Ephoto_BCG_ADJUST adjust)
 {
-    int a;
-    int r;
-    int g;
-    int b;
-    int bb;
-    int gg;
-    int rr;
+    float factor;
+    unsigned int *im_data;
+    unsigned int *im_data_new;
 
-    b = bb = (int)((*p1) & 0xff);
-    g = gg = (int)((*p1 >> 8) & 0xff);
-    r = rr = (int)((*p1 >> 16) & 0xff);
-    a = (int)((*p1 >> 24) & 0xff);
-    b = ephoto_mul_color_alpha(b, a);
-    g = ephoto_mul_color_alpha(g, a);
-    r = ephoto_mul_color_alpha(r, a);
+    im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
+    if (image_data)
+        memcpy(im_data, image_data, sizeof(unsigned int) * ebcg->w * ebcg->h);
+    else
+        memcpy(im_data, ebcg->original_im_data,
+                sizeof(unsigned int) * ebcg->w * ebcg->h);
+
+    im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
+
     if (BRIGHTNESS == adjust)
     {
-        bb = b + (int)*bcg;
-        gg = g + (int)*bcg;
-        rr = r + (int)*bcg;
+        ebcg->brightness = (int)*bcg;
     }
     else if (CONTRAST == adjust)
     {
-        bb = (int)((*bcg * (b - 128)) + 128);
-        gg = (int)((*bcg * (g - 128)) + 128);
-        rr = (int)((*bcg * (r - 128)) + 128);
+        int bot;
+        int top;
+
+        ebcg->contrast = *bcg;
+        top = ((255 + ebcg->contrast) * 259);
+        bot = ((259 - ebcg->contrast) * 255);
+        factor = (float)top / (float)bot;
     }
     else if (GAMMA == adjust)
     {
-        bb = (int)(pow(((double)b / 255), *bcg) * 255);
-        gg = (int)(pow(((double)g / 255), *bcg) * 255);
-        rr = (int)(pow(((double)r / 255), *bcg) * 255);
+        ebcg->gamma = 1 / *bcg;
     }
-    bb = ephoto_normalize_color(bb);
-    gg = ephoto_normalize_color(gg);
-    rr = ephoto_normalize_color(rr);
-    bb = ephoto_demul_color_alpha(bb, a);
-    gg = ephoto_demul_color_alpha(gg, a);
-    rr = ephoto_demul_color_alpha(rr, a);
 
-    return (a << 24) | (rr << 16) | (gg << 8) | bb;
+    for (Evas_Coord y = 0; y < ebcg->h; y++)
+    {
+        unsigned int *p1;
+        unsigned int *p2;
+
+        p1 = im_data + (y * ebcg->w);
+        p2 = im_data_new + (y * ebcg->w);
+        for (Evas_Coord x = 0; x < ebcg->w; x++)
+        {
+            int a;
+            int r;
+            int g;
+            int b;
+            int bb;
+            int gg;
+            int rr;
+
+            b = bb = (int)((*p1) & 0xff);
+            g = gg = (int)((*p1 >> 8) & 0xff);
+            r = rr = (int)((*p1 >> 16) & 0xff);
+            a = (int)((*p1 >> 24) & 0xff);
+            b = ephoto_mul_color_alpha(b, a);
+            g = ephoto_mul_color_alpha(g, a);
+            r = ephoto_mul_color_alpha(r, a);
+            if (BRIGHTNESS == adjust)
+            {
+                bb = b + ebcg->brightness;
+                gg = g + ebcg->brightness;
+                rr = r + ebcg->brightness;
+            }
+            else if (CONTRAST == adjust)
+            {
+                bb = (int)((factor * (b - 128)) + 128);
+                gg = (int)((factor * (g - 128)) + 128);
+                rr = (int)((factor * (r - 128)) + 128);
+            }
+            else if (GAMMA == adjust)
+            {
+                bb = (int)(pow(((double)b / 255), ebcg->gamma) * 255);
+                gg = (int)(pow(((double)g / 255), ebcg->gamma) * 255);
+                rr = (int)(pow(((double)r / 255), ebcg->gamma) * 255);
+            }
+            bb = ephoto_normalize_color(bb);
+            gg = ephoto_normalize_color(gg);
+            rr = ephoto_normalize_color(rr);
+            bb = ephoto_demul_color_alpha(bb, a);
+            gg = ephoto_demul_color_alpha(gg, a);
+            rr = ephoto_demul_color_alpha(rr, a);
+
+            *p2 = (a << 24) | (rr << 16) | (gg << 8) | bb;
+            p2++;
+            p1++;
+        }
+    }
+    ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
+                                            im_data_new, ebcg->w, ebcg->h);
+    free(im_data);
+    return im_data_new;
 }
 
 unsigned int *
 _ephoto_bcg_adjust_brightness(Ephoto_BCG *ebcg, int brightness,
                               unsigned int *image_data)
 {
-   unsigned int *im_data;
-   unsigned int *im_data_new;
-
-   im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ebcg->w * ebcg->h);
-   else
-     memcpy(im_data, ebcg->original_im_data,
-            sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   ebcg->brightness = brightness;
-   im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   for (Evas_Coord y = 0; y < ebcg->h; y++)
-     {
-        unsigned int *p1;
-        unsigned int *p2;
-
-        p1 = im_data + (y * ebcg->w);
-        p2 = im_data_new + (y * ebcg->w);
-        for (Evas_Coord x = 0; x < ebcg->w; x++)
-        {
-            _Ephoto_BCG_ADJUST adjust = BRIGHTNESS;
-            *p2 = _ephoto_bcg_adjust_img(p1, (float *)&ebcg->brightness, adjust);
-            p2++;
-            p1++;
-        }
-     }
-   ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
-                                           im_data_new, ebcg->w, ebcg->h);
-   free(im_data);
-   return im_data_new;
+    double value = brightness;
+    _Ephoto_BCG_ADJUST adjust = BRIGHTNESS;
+    return _ephoto_bcg_adjust_img(ebcg, &value, image_data, adjust);
 }
 
 unsigned int *
 _ephoto_bcg_adjust_contrast(Ephoto_BCG *ebcg, int contrast,
                             unsigned int *image_data)
 {
-   unsigned int *im_data;
-   unsigned int *im_data_new;
-   int top;
-   int bottom;
-   float factor;
-
-   im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ebcg->w * ebcg->h);
-   else
-     memcpy(im_data, ebcg->original_im_data,
-            sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   ebcg->contrast = contrast;
-   top = ((255 + contrast) * 259);
-   bottom = ((259 - contrast) * 255);
-   factor = (float)top / (float)bottom;
-   im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   for (Evas_Coord y = 0; y < ebcg->h; y++)
-     {
-        unsigned int *p1;
-        unsigned int *p2;
-
-        p1 = im_data + (y * ebcg->w);
-        p2 = im_data_new + (y * ebcg->w);
-        for (Evas_Coord x = 0; x < ebcg->w; x++)
-        {
-            _Ephoto_BCG_ADJUST adjust = CONTRAST;
-            *p2 = _ephoto_bcg_adjust_img(p1, &factor, adjust);
-            p2++;
-            p1++;
-        }
-     }
-   ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
-                                           im_data_new, ebcg->w, ebcg->h);
-   free(im_data);
-   return im_data_new;
+    double value = contrast;
+    _Ephoto_BCG_ADJUST adjust = CONTRAST;
+    return _ephoto_bcg_adjust_img(ebcg, &value, image_data, adjust);
 }
 
 unsigned int *
 _ephoto_bcg_adjust_gamma(Ephoto_BCG *ebcg, double gamma,
                          unsigned int *image_data)
 {
-   unsigned int *im_data;
-   unsigned int *im_data_new;
-
-   im_data = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-   if (image_data)
-     memcpy(im_data, image_data, sizeof(unsigned int) * ebcg->w * ebcg->h);
-   else
-     memcpy(im_data, ebcg->original_im_data,
-            sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   ebcg->gamma = 1 / gamma;
-   im_data_new = malloc(sizeof(unsigned int) * ebcg->w * ebcg->h);
-
-   for (Evas_Coord y = 0; y < ebcg->h; y++)
-     {
-        unsigned int *p1;
-        unsigned int *p2;
-
-        p1 = im_data + (y * ebcg->w);
-        p2 = im_data_new + (y * ebcg->w);
-        for (Evas_Coord x = 0; x < ebcg->w; x++)
-        {
-            _Ephoto_BCG_ADJUST adjust = GAMMA;
-            *p2 = _ephoto_bcg_adjust_img(p1, (float *)&ebcg->gamma, adjust);
-            p2++;
-            p1++;
-        }
-     }
-   ephoto_single_browser_image_data_update(ebcg->main, ebcg->image,
-                                           im_data_new, ebcg->w, ebcg->h);
-   free(im_data);
-   return im_data_new;
+    _Ephoto_BCG_ADJUST adjust = GAMMA;
+    return _ephoto_bcg_adjust_img(ebcg, &gamma, image_data, adjust);
 }
 
 static void
