@@ -12,6 +12,10 @@ commit history and authorship for proper open source accreditation!
 Others may resume their efforts, like all things in FOSS, nobody cares till
 you do, then everyone has an opinion and is interested...
 
+Original code/mess by Stephen M Houston/[@okratitan](https://github.com/okratitan)
+under BSD Clause, future work is now under MIT license. Thanks to Stephen for
+his past efforts being carried forward.
+
 ## Build
 
 Meson is the build system used for this project. For more information please
