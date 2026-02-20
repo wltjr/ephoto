@@ -7,7 +7,7 @@ static const Ecore_Getopt options =
    "ephoto",
    "%prog [directory or filename]",
    VERSION,
-   "(C) 2026 William L Thomson Jr, see AUTHORS.",
+   "(C) 2026 William L Thomson Jr.",
    "MIT, see COPYING",
    "A comprehensive image viewer",
    EINA_TRUE,
