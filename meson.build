@@ -1,6 +1,6 @@
 ##### project
 project('ephoto', 'c',
-        version        : '1.6.0',
+        version        : '1.6.1',
         license        : 'MIT',
         default_options: [ 'c_std=gnu2x' ],
         meson_version  : '>= 1.0.0')
