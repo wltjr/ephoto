@@ -452,15 +452,8 @@ _config_about(Evas_Object *parent)
    eina_strbuf_append_printf(sbuf,
                              _("Ephoto is a comprehensive image viewer based on the EFL. For more"
                                "information, please visit the Ephoto project page:<br/>"
-                               "<a href=http://www.smhouston.us/ephoto/>"
-                               "http://www.smhouston.us/ephoto/</a><br/><br/>"
-                               "Ephoto also has a page on the Enlightenment wiki:<br/>"
-                               "<a href=https://phab.enlightenment.org/w/projects/ephoto>"
-                               "https://phab.enlightenment.org/w/projects/ephoto</a><br/><br/>"
-                               "Ephoto's source can be found through Enlightenment's git:<br/>"
-                               "<a href=http://git.enlightenment.org/apps/ephoto.git>"
-                               "http://git.enlightenment.org/apps/ephoto.git</a><br/><br/>"
-                               "<b>Authors:</b><br/>"));
+                               "<a href=https://github.com/wltjr/ephoto>"
+                               "https://github.com/wltjr/ephoto</a><br/><br/>"));
    elm_object_text_set(entry, eina_strbuf_string_get(sbuf));
    evas_object_smart_callback_add(entry, "anchor,hover,opened",
                                   _link_anchor, entry);
