@@ -416,7 +416,6 @@ _config_about(Evas_Object *parent)
    Evas_Object *lbl;
    Eina_Strbuf *sbuf = eina_strbuf_new();
    char ver[PATH_MAX];
-   FILE *f;
 
    box = elm_box_add(parent);
    elm_box_horizontal_set(box, EINA_FALSE);
@@ -462,49 +461,6 @@ _config_about(Evas_Object *parent)
                                "<a href=http://git.enlightenment.org/apps/ephoto.git>"
                                "http://git.enlightenment.org/apps/ephoto.git</a><br/><br/>"
                                "<b>Authors:</b><br/>"));
-   f = fopen(PACKAGE_DATA_DIR "/AUTHORS", "r");
-   if (f)
-     {
-        char buf[PATH_MAX];
-
-        while (fgets(buf, sizeof(buf), f))
-          {
-             int len;
-
-             len = strlen(buf);
-             if (len > 0)
-               {
-                  if (buf[len - 1] == '\n')
-                    {
-                       buf[len - 1] = 0;
-                       len--;
-                    }
-                  if (len > 0)
-                    {
-                       char *p;
-
-                       do
-                         {
-                            p = strchr(buf, '<');
-                            if (p)
-                              *p = 0;
-                         }
-                       while (p);
-                       do
-                         {
-                            p = strchr(buf, '>');
-                            if (p)
-                              *p = 0;
-                         }
-                       while (p);
-                       eina_strbuf_append_printf(sbuf, "%s<br/>", buf);
-                    }
-                  if (len == 0)
-                    eina_strbuf_append_printf(sbuf, "<br/>");
-               }
-          }
-        fclose(f);
-     }
    elm_object_text_set(entry, eina_strbuf_string_get(sbuf));
    evas_object_smart_callback_add(entry, "anchor,hover,opened",
                                   _link_anchor, entry);
