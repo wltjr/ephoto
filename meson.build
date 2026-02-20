@@ -83,9 +83,6 @@ else
 endif
 configure_file(output: 'config.h', configuration: cfg)
 
-install_data('AUTHORS',
-             install_dir: join_paths(dir_data, 'ephoto'))
-
 if use_translations
   subdir('po')
 endif
